@@ -58,14 +58,14 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    slug: 'customer-support',
-    title: 'AI SUPPORT HUB',
-    subtitle: 'Intelligent Ticket Platform',
+    slug: 'venture-radar',
+    title: 'VENTURE RADAR',
+    subtitle: 'B2B Opportunity Scout',
     description:
-      'AI-powered customer support that automates ticket routing, surfaces relevant knowledge via vector search, and runs dual chatbots — one for customers, one assisting agents. Built on React, FastAPI, and GPT-4o.',
-    tags: ['React', 'FastAPI', 'GPT-4o', 'Vector Search', 'Python', 'TypeScript'],
-    repo: 'https://github.com/Suhas-123-cell/customer-support',
-    image: `${GH}/customer-support`,
+      'Type a B2B industry — get back ranked AI automation opportunities with investor-ready product briefs in 90 seconds. A 4-agent pipeline: research → competitor scan → opportunity scoring → brief writing. Turns days of manual discovery into one API call.',
+    tags: ['Python', 'Multi-Agent', 'LLM', 'RAG', 'FastAPI'],
+    repo: 'https://github.com/Suhas-123-cell/Venture-Radar',
+    image: `${GH}/Venture-Radar`,
     featured: false,
   },
   {
@@ -73,10 +73,11 @@ export const projects: Project[] = [
     title: 'STAYCHAT',
     subtitle: 'Hotel RAG Chatbot',
     description:
-      'Hotel QA system that answers guest questions from a curated knowledge base using hybrid retrieval — FAISS vector search + BM25 keyword matching — with Groq-hosted Llama. Zero hallucinations by design.',
+      'Hotel QA system that answers guest questions from a curated knowledge base using hybrid retrieval — FAISS vector search + BM25 keyword matching — with Groq-hosted Llama. Zero hallucinations by design. Live on Hugging Face Spaces.',
     tags: ['Python', 'FAISS', 'BM25', 'Groq', 'LLaMA', 'RAG'],
     repo: 'https://github.com/Suhas-123-cell/RAG-hotel',
-    image: `${GH}/RAG-hotel`,
+    demo: 'https://huggingface.co/spaces/suhas20sh/staychat-rag',
+    image: '/images/staychat.png',
     featured: false,
   },
 ]
