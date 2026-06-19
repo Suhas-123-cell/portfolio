@@ -97,3 +97,21 @@ body {
   outline: 2px solid oklch(82% 0.18 198);
   outline-offset: 2px;
 }
+
+/* ── CRT power-on: screen grows from thin horizontal line ─────────────── */
+@keyframes crt-power-on {
+  0%   { clip-path: inset(50% 0); filter: brightness(4); }
+  30%  { clip-path: inset(10% 0); filter: brightness(2); }
+  60%  { clip-path: inset(2% 0);  filter: brightness(1.3); }
+  100% { clip-path: inset(0% 0);  filter: brightness(1); }
+}
+
+.crt-power-on {
+  animation: crt-power-on 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Float animation for ambient glyphs */
+@keyframes float-glyph {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}

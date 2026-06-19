@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# suhas.exe — retro portfolio
 
-## Getting Started
+Personal portfolio built as a CRT terminal / retro arcade OS.
 
-First, run the development server:
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Edit your content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All real content lives in one place:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| File | What to edit |
+|---|---|
+| `content/about.ts` | Bio, stat block (level, origin, weapon, ability), links |
+| `content/projects.ts` | Project titles, descriptions, tags, repo/demo URLs |
+| `content/skills.ts` | Skill names, levels (0–100), categories |
 
-## Learn More
+## Toggle CRT effects
 
-To learn more about Next.js, take a look at the following resources:
+- Click **CRT:ON/OFF** button (top-right corner) — persists to localStorage
+- Set `prefers-reduced-motion` in your OS to auto-disable flicker/curvature
+- CSS intensity knobs live in `app/globals.css` under `:root`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Dial down the effects
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+In `app/globals.css`:
+```css
+:root {
+  --crt-scanline-opacity:   0.25;  /* reduce to taste */
+  --crt-flicker-intensity:  0.04;  /* set to 0 to kill flicker */
+  --crt-aberration-offset:  1.5px; /* chromatic aberration on headings */
+  --crt-curvature:          12px;  /* screen corner rounding */
+}
+```
 
-## Deploy on Vercel
+## Palette
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Phosphor Amber** — inspired by the IBM 5151 amber monochrome monitor (1984).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Background: `oklch(5% 0.007 55)` — near-black with warm amber tint
+- Amber mid: `oklch(55% 0.155 65)` — body/dim UI
+- Amber bright: `oklch(78% 0.17 72)` — primary text
+- Amber glow: `oklch(90% 0.12 80)` — headings
+- Cyan: `oklch(68% 0.15 198)` — accents, [OK] markers, links
+
+## Fonts
+
+- **Press Start 2P** — headings, labels, tags
+- **VT323** — body text, terminal output (loaded via `next/font/google`)
+
+## Routes
+
+| Path | What it is |
+|---|---|
+| `/` | Boot screen — typewriter log, then "PRESS ANY KEY" |
+| `/menu` | Game hub — arrow key + mouse navigation |
+| `/about` | Character profile — bio + stat block |
+| `/projects` | Project cartridge grid |
+| `/projects/[slug]` | Project detail — description, stack, links |
+| `/skills` | RPG stat bars by category |
+| `/contact` | Fake terminal — type `email`, `github`, `back`, `clear` |
