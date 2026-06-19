@@ -32,7 +32,8 @@ export default function ProjectsPage() {
                   <div className="relative w-full h-32 overflow-hidden"
                     style={{ background: 'oklch(10% 0.009 55)' }}>
                     <Image src={p.image} alt={`${p.title} preview`} fill
-                      className="object-cover opacity-70 hover:opacity-90 transition-opacity"
+                      className="object-cover transition-opacity"
+                      style={{ filter: 'sepia(0.6) hue-rotate(-15deg) saturate(1.1) brightness(0.75)', opacity: 0.9 }}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                     <div className="absolute inset-0 pointer-events-none"
                       style={{

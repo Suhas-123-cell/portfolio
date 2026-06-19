@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { CRTScreen } from '@/components/CRTScreen'
 import { about } from '@/content/about'
 
@@ -21,6 +22,7 @@ const INIT_LOG: LogLine[] = [
 ]
 
 export default function ContactPage() {
+  const router = useRouter()
   const [log, setLog] = useState<LogLine[]>(INIT_LOG)
   const [input, setInput] = useState('')
 
@@ -46,7 +48,7 @@ export default function ContactPage() {
     }
 
     if (trimmed === 'back') {
-      window.location.href = '/menu'
+      router.push('/menu')
       return
     }
 

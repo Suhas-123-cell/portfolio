@@ -6,8 +6,10 @@ import { motion } from 'motion/react'
 import { CRTScreen } from '@/components/CRTScreen'
 import { useTypeWriter } from '@/components/TypeWriter'
 
+const BUILD_DATE = new Date().toISOString().slice(0, 10)
+
 const BOOT_LINES = [
-  'SUHAS-OS v2.4.1 (Build 2026-06-19)',
+  `SUHAS-OS v2.4.1 (Build ${BUILD_DATE})`,
   'Copyright (C) 2026 Suhas Chowdary. All rights reserved.',
   '',
   'Initializing hardware...',
@@ -30,37 +32,36 @@ const BOOT_LINES = [
 export default function BootScreen() {
   const router = useRouter()
   const { displayed, done } = useTypeWriter(BOOT_LINES, 18, 60)
-  const [pressed, setPressed] = useState(false)
+  const [navigating, setNavigating] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [displayed])
 
-  useEffect(() => {
-    if (!done) return
-    function go() { navigate() }
-    window.addEventListener('keydown', go, { once: true })
-    return () => window.removeEventListener('keydown', go)
-  }, [done])
-
+  // Allow skip at any time — ponytail: simplest path to /menu
   function navigate() {
-    if (pressed) return
-    setPressed(true)
+    if (navigating) return
+    setNavigating(true)
     router.push('/menu')
   }
 
+  useEffect(() => {
+    function handleKey() { navigate() }
+    window.addEventListener('keydown', handleKey, { once: true })
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [])
+
   return (
     <CRTScreen>
-      {/* CRT power-on effect wraps the whole content */}
       <motion.div
         className="min-h-dvh flex flex-col p-4 sm:p-8 font-vt323 text-lg sm:text-xl overflow-y-auto cursor-pointer"
         initial={{ clipPath: 'inset(50% 0)', filter: 'brightness(4)' }}
         animate={{ clipPath: 'inset(0% 0)', filter: 'brightness(1)' }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
-        onClick={done ? navigate : undefined}
+        transition={{ duration: 0.6 }}
+        onClick={navigate}
         role="main"
-        aria-label="Boot screen, press any key to start"
+        aria-label="Boot screen — click or press any key to skip"
       >
         <div className="max-w-2xl mx-auto w-full pt-8">
           {displayed.map((line, i) => (
@@ -72,7 +73,7 @@ export default function BootScreen() {
                   ? 'oklch(35% 0.10 62)'
                   : 'oklch(78% 0.17 72)',
               }}>
-              {line || ' '}
+              {line || ' '}
             </div>
           ))}
 
