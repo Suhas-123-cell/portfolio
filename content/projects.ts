@@ -10,8 +10,6 @@ export type Project = {
   featured: boolean
 }
 
-const GH = 'https://opengraph.githubassets.com/1/Suhas-123-cell'
-
 export const projects: Project[] = [
   {
     slug: 'streakfight',
@@ -21,7 +19,7 @@ export const projects: Project[] = [
       'Compete with friends on daily habit streaks. Miss a day and you break the chain — the group watches, and the pressure is real. Built with React Native, FastAPI, Supabase, and Gemini 2.5 Flash for smart streak analysis.',
     tags: ['React Native', 'FastAPI', 'Supabase', 'Gemini 2.5 Flash', 'Python'],
     repo: 'https://github.com/Suhas-123-cell/streak',
-    image: `${GH}/streak`,
+    image: '/images/streak.png',
     featured: true,
   },
   {
@@ -32,7 +30,7 @@ export const projects: Project[] = [
       'Agentic pipeline that detects and surgically corrects LLM hallucinations claim-by-claim. Uses a fine-tuned DeBERTa NLI classifier for verification and web evidence retrieval — catching what the model got wrong before it ships.',
     tags: ['Python', 'DeBERTa', 'LLaMA 3.2', 'Gemini', 'NLP', 'RAG'],
     repo: 'https://github.com/Suhas-123-cell/Hallu-Check',
-    image: `${GH}/Hallu-Check`,
+    image: '/images/hallu-check.png',
     featured: true,
   },
   {
@@ -43,7 +41,7 @@ export const projects: Project[] = [
       'Real-time customer analytics for 3 retail stores: foot traffic, demographic heatmaps, and dwell-time dashboards from live CCTV feeds. YOLOv8n handles the vision; FastAPI + SQLite handle the data; React shows the numbers.',
     tags: ['YOLOv8', 'FastAPI', 'SQLite', 'React', 'Computer Vision', 'Python'],
     repo: 'https://github.com/Suhas-123-cell/purplle',
-    image: `${GH}/purplle`,
+    image: '/images/purplle.png',
     featured: true,
   },
   {
@@ -54,7 +52,7 @@ export const projects: Project[] = [
       'Location-based AR mobile game where players explore the real world to discover and catch anime characters. Think Pokémon GO but with Naruto, One Piece, and Jujutsu Kaisen. Built with React Native/Expo, Node.js, and Supabase.',
     tags: ['React Native', 'Expo', 'Node.js', 'Supabase', 'TypeScript'],
     repo: 'https://github.com/Suhas-123-cell/anigo',
-    image: `${GH}/anigo`,
+    image: '/images/anigo.png',
     featured: true,
   },
   {
@@ -65,7 +63,7 @@ export const projects: Project[] = [
       'Type a B2B industry — get back ranked AI automation opportunities with investor-ready product briefs in 90 seconds. A 4-agent pipeline: research → competitor scan → opportunity scoring → brief writing. Turns days of manual discovery into one API call.',
     tags: ['Python', 'Multi-Agent', 'LLM', 'RAG', 'FastAPI'],
     repo: 'https://github.com/Suhas-123-cell/Venture-Radar',
-    image: `${GH}/Venture-Radar`,
+    image: '/images/venture-radar.png',
     featured: false,
   },
   {
