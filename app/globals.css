@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Phosphor Amber palette — IBM 5151 amber monitor, circa 1984 */
+  --color-crt-bg:           oklch(5% 0.007 55);
+  --color-crt-dark:         oklch(10% 0.009 55);
+  --color-crt-amber-dim:    oklch(35% 0.10 62);
+  --color-crt-amber:        oklch(55% 0.155 65);
+  --color-crt-amber-bright: oklch(78% 0.17 72);
+  --color-crt-amber-glow:   oklch(90% 0.12 80);
+  --color-crt-cyan:         oklch(68% 0.15 198);
+  --color-crt-cyan-bright:  oklch(82% 0.18 198);
+  --color-crt-red:          oklch(60% 0.18 28);
+
+  --font-press-start: var(--font-press-start-2p);
+  --font-vt323:       var(--font-vt323);
 }
 
-@media (prefers-color-scheme: dark) {
+/* CRT intensity knobs */
+:root {
+  --crt-scanline-opacity:   0.25;
+  --crt-flicker-intensity:  0.04;
+  --crt-aberration-offset:  1.5px;
+  --crt-curvature:          12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --crt-flicker-intensity: 0;
+    --crt-scanline-opacity:  0.08;
+    --crt-aberration-offset: 0px;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:  oklch(5% 0.007 55);
+  color:       oklch(78% 0.17 72);
+  font-family: var(--font-vt323), monospace;
+  min-height:  100dvh;
+  overflow-x:  hidden;
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+
+@keyframes crt-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1; filter: brightness(1);
+  }
+  20%, 24%, 55% {
+    opacity: calc(1 - var(--crt-flicker-intensity));
+    filter:  brightness(calc(1 - var(--crt-flicker-intensity) * 2));
+  }
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ── Utility classes ─────────────────────────────────────────────────────── */
+
+.font-press-start { font-family: var(--font-press-start), monospace; }
+.font-vt323       { font-family: var(--font-vt323), monospace; }
+
+.crt-flicker { animation: crt-flicker 8s infinite; }
+.blink       { animation: blink 1s step-end infinite; }
+
+.chromatic {
+  text-shadow:
+    calc(var(--crt-aberration-offset) * -1) 0 oklch(60% 0.18 28 / 0.55),
+    var(--crt-aberration-offset)            0 oklch(68% 0.15 198 / 0.55);
+}
+
+.amber-glow {
+  text-shadow:
+    0 0 8px  oklch(78% 0.17 72 / 0.8),
+    0 0 20px oklch(78% 0.17 72 / 0.4),
+    0 0 40px oklch(78% 0.17 72 / 0.15);
+}
+
+.cyan-glow {
+  text-shadow:
+    0 0 8px  oklch(82% 0.18 198 / 0.8),
+    0 0 20px oklch(82% 0.18 198 / 0.4);
+}
+
+.project-card {
+  border: 2px solid oklch(35% 0.10 62);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.project-card:hover,
+.project-card:focus-within {
+  border-color: oklch(78% 0.17 72);
+  box-shadow: 0 0 16px oklch(78% 0.17 72 / 0.25);
+}
+.project-card:focus-visible {
+  outline: 2px solid oklch(82% 0.18 198);
+  outline-offset: 2px;
 }
