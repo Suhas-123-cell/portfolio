@@ -8,6 +8,7 @@ export type Project = {
   demo?: string
   image: string
   featured: boolean
+  darkBg?: boolean
 }
 
 export const projects: Project[] = [
@@ -21,6 +22,7 @@ export const projects: Project[] = [
     repo: 'https://github.com/Suhas-123-cell/streak',
     image: '/images/streak.png',
     featured: true,
+    darkBg: true,
   },
   {
     slug: 'hallu-check',
@@ -43,6 +45,7 @@ export const projects: Project[] = [
     repo: 'https://github.com/Suhas-123-cell/purplle',
     image: '/images/purplle.png',
     featured: true,
+    darkBg: true,
   },
   {
     slug: 'anigo',
@@ -54,6 +57,7 @@ export const projects: Project[] = [
     repo: 'https://github.com/Suhas-123-cell/anigo',
     image: '/images/anigo.png',
     featured: true,
+    darkBg: true,
   },
   {
     slug: 'venture-radar',
@@ -77,5 +81,6 @@ export const projects: Project[] = [
     demo: 'https://huggingface.co/spaces/suhas20sh/staychat-rag',
     image: '/images/staychat.png',
     featured: false,
+    darkBg: true,
   },
 ]

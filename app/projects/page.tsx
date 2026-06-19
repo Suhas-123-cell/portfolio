@@ -33,7 +33,12 @@ export default function ProjectsPage() {
                     {/* ponytail: plain img avoids next/image dev-mode optimization lag */}
                     <img src={p.image} alt={`${p.title} preview`}
                       className="absolute inset-0 w-full h-full object-cover"
-                      style={{ filter: 'invert(1) sepia(0.5) hue-rotate(170deg) saturate(0.8) brightness(0.7)', opacity: 0.92 }}
+                      style={{
+                        filter: p.darkBg
+                          ? 'sepia(0.5) hue-rotate(10deg) saturate(1.3) brightness(0.8)'
+                          : 'invert(1) sepia(0.5) hue-rotate(170deg) saturate(0.8) brightness(0.7)',
+                        opacity: 0.92,
+                      }}
                     />
                     <div className="absolute inset-0 pointer-events-none"
                       style={{
