@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'motion/react'
 import { CRTScreen } from '@/components/CRTScreen'
 import { projects } from '@/content/projects'
@@ -31,10 +30,11 @@ export default function ProjectsPage() {
                   className="block project-card overflow-hidden focus:outline-none h-full">
                   <div className="relative w-full h-32 overflow-hidden"
                     style={{ background: 'oklch(10% 0.009 55)' }}>
-                    <Image src={p.image} alt={`${p.title} preview`} fill
-                      className="object-cover transition-opacity"
-                      style={{ filter: 'sepia(0.6) hue-rotate(-15deg) saturate(1.1) brightness(0.75)', opacity: 0.9 }}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+                    {/* ponytail: plain img avoids next/image dev-mode optimization lag */}
+                    <img src={p.image} alt={`${p.title} preview`}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      style={{ filter: 'invert(1) sepia(0.5) hue-rotate(170deg) saturate(0.8) brightness(0.7)', opacity: 0.92 }}
+                    />
                     <div className="absolute inset-0 pointer-events-none"
                       style={{
                         background: `repeating-linear-gradient(
