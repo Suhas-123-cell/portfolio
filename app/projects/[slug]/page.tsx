@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { CRTScreen } from '@/components/CRTScreen'
 import { projects } from '@/content/projects'
 
@@ -23,13 +22,17 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           {/* Hero image */}
           <div className="mt-8 relative w-full h-48 sm:h-64 overflow-hidden border-2"
             style={{ borderColor: 'oklch(55% 0.155 65)', boxShadow: '0 0 32px oklch(78% 0.17 72 / 0.15)' }}>
-            <Image
+            {/* ponytail: plain img bypasses next/image optimization cache */}
+            <img
               src={project.image}
               alt={`${project.title} preview`}
-              fill
-              className="object-cover opacity-75"
-              priority
-              sizes="(max-width: 640px) 100vw, 672px"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{
+                filter: project.darkBg
+                  ? 'sepia(0.5) hue-rotate(10deg) saturate(1.3) brightness(0.8)'
+                  : 'invert(1) sepia(0.5) hue-rotate(170deg) saturate(0.8) brightness(0.7)',
+                opacity: 0.85,
+              }}
             />
             <div className="absolute inset-0"
               style={{ background: 'oklch(55% 0.155 65 / 0.08)', mixBlendMode: 'color' }} />
