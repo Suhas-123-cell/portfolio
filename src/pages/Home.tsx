@@ -13,7 +13,7 @@ const featured = projects.find(p => p.featured) ?? projects[0]
 const STATS = [
   { label: 'Repos',       value: '18' },
   { label: 'AI Projects', value: '8'  },
-  { label: 'Languages',   value: '5'  },
+  { label: 'Languages',   value: '3'  },
   { label: 'Shipped',     value: '∞'  },
 ]
 
