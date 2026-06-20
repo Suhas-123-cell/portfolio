@@ -2,12 +2,11 @@
 
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { GlassPanel } from '@/components/GlassPanel'
 import { projects } from '@/content/projects'
 
 export default function ProjectsPage() {
   return (
-    <main className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12" role="main">
+    <main id="main" className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12">
       <motion.div
         initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
@@ -16,7 +15,7 @@ export default function ProjectsPage() {
         <div className="text-[10px] font-sora tracking-[0.3em] uppercase mb-1"
           style={{ color: 'oklch(75% 0.18 185)' }}>◈ Level Select</div>
         <h1 className="font-bebas text-4xl md:text-5xl" style={{ color: 'oklch(95% 0.01 240)' }}>Projects</h1>
-        <p className="mt-1 text-sm font-sora" style={{ color: 'oklch(65% 0.04 240)' }}>
+        <p className="mt-1 text-sm font-sora" style={{ color: 'oklch(72% 0.04 240)' }}>
           {projects.length} quests in the codex
         </p>
       </motion.div>
@@ -52,7 +51,7 @@ export default function ProjectsPage() {
                 <h2 className="font-bebas text-2xl md:text-3xl leading-none mb-2"
                   style={{ color: 'oklch(95% 0.01 240)' }}>{p.title}</h2>
                 <p className="text-xs font-sora leading-relaxed mb-3"
-                  style={{ color: 'oklch(65% 0.04 240)' }}>
+                  style={{ color: 'oklch(72% 0.04 240)' }}>
                   {p.description.slice(0, 110)}…
                 </p>
                 <div className="flex flex-wrap gap-1.5">

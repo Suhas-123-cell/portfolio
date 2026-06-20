@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import { Sora, Bebas_Neue, Noto_Sans_JP, Press_Start_2P, VT323 } from 'next/font/google'
+import { Sora, Bebas_Neue, Noto_Sans_JP } from 'next/font/google'
+import { MotionConfig } from 'motion/react'
 import './globals.css'
-import { CRTProvider } from '@/lib/crt-context'
 import { NavRail } from '@/components/NavRail'
 
 const sora = Sora({
@@ -24,21 +24,6 @@ const notoJP = Noto_Sans_JP({
   weight: ['400', '700'],
 })
 
-/* Legacy CRT fonts — kept so old components render correctly */
-const pressStart = Press_Start_2P({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-press-start-2p',
-  display: 'swap',
-})
-
-const vt323 = VT323({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-vt323',
-  display: 'swap',
-})
-
 export const metadata: Metadata = {
   title: 'Suhas Chowdary | Portfolio',
   description: 'AI Engineer & Full Stack Developer — building things that think.',
@@ -48,19 +33,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`
-        ${sora.variable}
-        ${bebas.variable}
-        ${notoJP.variable}
-        ${pressStart.variable}
-        ${vt323.variable}
-      `}
+      className={`${sora.variable} ${bebas.variable} ${notoJP.variable}`}
     >
       <body className="min-h-dvh bg-bg-deep text-text overflow-x-hidden">
-        <CRTProvider>
+        {/* Skip to main content for keyboard users */}
+        <a href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100]
+                     focus:px-4 focus:py-2 focus:rounded-lg focus:font-sora focus:text-sm"
+          style={{ background: 'oklch(75% 0.18 185)', color: 'oklch(8% 0.025 240)' }}>
+          Skip to content
+        </a>
+        {/* MotionConfig propagates reducedMotion to all motion.* elements sitewide */}
+        <MotionConfig reducedMotion="user">
           <NavRail />
           {children}
-        </CRTProvider>
+        </MotionConfig>
       </body>
     </html>
   )

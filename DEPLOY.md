@@ -57,7 +57,7 @@ git push -u origin main
 - DNS propagation takes 5–30 minutes (sometimes up to 48h)
 - Check status: https://dnschecker.org — search your domain
 - Once propagated, Vercel auto-provisions a Let's Encrypt TLS cert
-- Visit `https://your-domain` — you should see the boot screen
+- Visit `https://your-domain` — you should see the launcher dashboard
 
 ### If it's still not working after 1 hour
 - Verify the CNAME in Cloudflare is pointing to `cname.vercel-dns.com`

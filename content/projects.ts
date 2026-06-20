@@ -33,7 +33,7 @@ export const projects: Project[] = [
     tags: ['Python', 'DeBERTa', 'LLaMA 3.2', 'Gemini', 'NLP', 'RAG'],
     repo: 'https://github.com/Suhas-123-cell/Hallu-Check',
     image: '/images/hallu-check.png',
-    featured: true,
+    featured: false,
   },
   {
     slug: 'purplle',
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     tags: ['YOLOv8', 'FastAPI', 'SQLite', 'React', 'Computer Vision', 'Python'],
     repo: 'https://github.com/Suhas-123-cell/purplle',
     image: '/images/purplle.png',
-    featured: true,
+    featured: false,
     darkBg: true,
   },
   {
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     tags: ['React Native', 'Expo', 'Node.js', 'Supabase', 'TypeScript'],
     repo: 'https://github.com/Suhas-123-cell/anigo',
     image: '/images/anigo.png',
-    featured: true,
+    featured: false,
     darkBg: true,
   },
   {

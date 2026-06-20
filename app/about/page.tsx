@@ -15,7 +15,7 @@ const ATTRS = [
 
 export default function AboutPage() {
   return (
-    <main className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12" role="main">
+    <main id="main" className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12">
       <div className="max-w-2xl">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }} className="mb-8">
@@ -44,8 +44,8 @@ export default function AboutPage() {
               <div className="text-sm font-sora mt-0.5" style={{ color: 'oklch(75% 0.18 185)' }}>
                 {about.class}
               </div>
-              <div className="text-xs font-sora mt-1" style={{ color: 'oklch(65% 0.04 240)' }}>
-                📍 {about.origin}
+              <div className="text-xs font-sora mt-1" style={{ color: 'oklch(72% 0.04 240)' }}>
+                {about.origin}
               </div>
             </div>
           </GlassPanel>
@@ -55,10 +55,9 @@ export default function AboutPage() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
           {ATTRS.map((a, i) => (
-            <GlassPanel key={a.label} size="sm" className="p-3"
-              style={{ animationDelay: `${i * 50}ms` }}>
+            <GlassPanel key={a.label} size="sm" className="p-3">
               <div className="text-[8px] font-sora uppercase tracking-wider mb-1"
-                style={{ color: 'oklch(65% 0.04 240)' }}>{a.label}</div>
+                style={{ color: 'oklch(72% 0.04 240)' }}>{a.label}</div>
               <div className="text-xs md:text-sm font-sora font-semibold"
                 style={{ color: 'oklch(85% 0.20 185)' }}>{a.value}</div>
             </GlassPanel>
@@ -70,7 +69,7 @@ export default function AboutPage() {
           <GlassPanel className="p-5 md:p-6 mb-6 space-y-4">
             {about.bio.map((para, i) => (
               <p key={i} className="text-sm md:text-base font-sora leading-relaxed"
-                style={{ color: i === 0 ? 'oklch(90% 0.01 240)' : 'oklch(70% 0.03 240)' }}>
+                style={{ color: i === 0 ? 'oklch(90% 0.01 240)' : 'oklch(73% 0.03 240)' }}>
                 {para}
               </p>
             ))}

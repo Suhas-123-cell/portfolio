@@ -70,7 +70,8 @@ export default function LauncherDashboard() {
   }, [reduced])
 
   return (
-    <main className="relative min-h-dvh overflow-hidden" role="main">
+    <main id="main" className="relative min-h-dvh overflow-hidden">
+      <h1 className="sr-only">Suhas Chowdary — AI Engineer &amp; Full Stack Developer</h1>
 
       {/* Hero background */}
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -78,9 +79,9 @@ export default function LauncherDashboard() {
           src={HERO_ART}
           alt=""
           className="absolute inset-0 w-full h-full object-cover select-none"
-          animate={reduced ? {} : { x: parallax.x, y: parallax.y, scale: 1.05 }}
+          animate={reduced ? {} : { x: parallax.x, y: parallax.y }}
           transition={{ type: 'spring', stiffness: 25, damping: 18 }}
-          style={{ willChange: 'transform' }}
+          style={{ willChange: reduced ? 'auto' : 'transform', scale: 1.05 }}
           loading="eager"
         />
         {/* Readability scrim */}
@@ -218,7 +219,11 @@ export default function LauncherDashboard() {
                   </div>
                 </div>
 
-                <GlassPanel size="sm" className="px-3 py-2 mb-3">
+                <div className="px-3 py-2 mb-3 rounded-xl"
+                  style={{
+                    background: 'oklch(100% 0 0 / 0.08)',
+                    border: '1px solid oklch(100% 0 0 / 0.10)',
+                  }}>
                   <div className="text-[9px] font-sora uppercase tracking-wider mb-0.5"
                     style={{ color: 'oklch(83% 0.22 155)' }}>
                     ▶ Currently Building
@@ -226,10 +231,10 @@ export default function LauncherDashboard() {
                   <div className="text-sm font-sora font-semibold" style={{ color: 'oklch(95% 0.01 240)' }}>
                     {featured.title}
                   </div>
-                  <div className="text-[10px] font-sora mt-0.5" style={{ color: 'oklch(65% 0.04 240)' }}>
+                  <div className="text-[10px] font-sora mt-0.5" style={{ color: 'oklch(72% 0.04 240)' }}>
                     {featured.subtitle} · 2026
                   </div>
-                </GlassPanel>
+                </div>
 
                 <div className="flex items-center gap-2">
                   {SOCIAL.map(s => (

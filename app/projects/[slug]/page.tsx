@@ -15,7 +15,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
   const idx = projects.findIndex(p => p.slug === slug)
 
   return (
-    <main className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12" role="main">
+    <main id="main" className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12">
       <div className="max-w-2xl">
         <Link href="/projects"
           className="inline-flex items-center gap-1.5 text-sm font-sora mb-8

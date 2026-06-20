@@ -40,7 +40,7 @@ const LINKS = [
 
 export default function ContactPage() {
   return (
-    <main className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12" role="main">
+    <main id="main" className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12">
       <div className="max-w-lg">
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }} className="mb-8">

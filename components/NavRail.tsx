@@ -74,14 +74,15 @@ export function NavRail() {
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                 ${active ? 'active' : ''}`}
               style={{
-                color: active ? 'oklch(85% 0.20 185)' : 'oklch(65% 0.04 240)',
+                color: active ? 'oklch(85% 0.20 185)' : 'oklch(72% 0.04 240)',
                 outlineColor: 'oklch(75% 0.18 185)',
               }}
             >
               {item.icon}
-              <span className="absolute left-full ml-3 px-2 py-1 rounded-md text-xs whitespace-nowrap
-                               opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity
-                               glass-sm font-sora"
+              <span aria-hidden="true"
+                className="absolute left-full ml-3 px-2 py-1 rounded-md text-xs whitespace-nowrap
+                           opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity
+                           glass-sm font-sora"
                 style={{ color: 'oklch(95% 0.01 240)' }}>
                 {item.label}
               </span>
@@ -94,12 +95,16 @@ export function NavRail() {
         })}
       </nav>
 
-      {/* Mobile: bottom bar */}
+      {/* Mobile: bottom bar — hidden from AT since desktop nav is the primary landmark */}
       <nav
-        aria-label="Main navigation"
+        aria-label="Mobile navigation"
         className="fixed bottom-0 left-0 right-0 z-50 flex md:hidden justify-around items-center
                    h-16 px-2 glass"
-        style={{ borderRadius: 0, borderTop: '1px solid oklch(100% 0 0 / 0.10)' }}
+        style={{
+          borderRadius: 0,
+          borderTop: '1px solid oklch(100% 0 0 / 0.10)',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+        }}
       >
         {NAV.map(item => {
           const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
@@ -113,7 +118,7 @@ export function NavRail() {
                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
                 ${active ? 'active' : ''}`}
               style={{
-                color: active ? 'oklch(85% 0.20 185)' : 'oklch(65% 0.04 240)',
+                color: active ? 'oklch(85% 0.20 185)' : 'oklch(72% 0.04 240)',
                 outlineColor: 'oklch(75% 0.18 185)',
               }}
             >

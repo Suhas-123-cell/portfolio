@@ -15,13 +15,13 @@ const CAT_COLORS: Record<string, string> = {
 
 export default function SkillsPage() {
   return (
-    <main className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12" role="main">
+    <main id="main" className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }} className="mb-8 md:mb-10">
         <div className="text-[10px] font-sora tracking-[0.3em] uppercase mb-1"
           style={{ color: 'oklch(75% 0.18 185)' }}>◈ Stats Screen</div>
         <h1 className="font-bebas text-4xl md:text-5xl" style={{ color: 'oklch(95% 0.01 240)' }}>Skills</h1>
-        <p className="mt-1 text-sm font-sora" style={{ color: 'oklch(65% 0.04 240)' }}>
+        <p className="mt-1 text-sm font-sora" style={{ color: 'oklch(72% 0.04 240)' }}>
           Player One attributes
         </p>
       </motion.div>
@@ -56,7 +56,7 @@ export default function SkillsPage() {
                       <div className="relative h-2 rounded-full overflow-hidden"
                         style={{ background: 'oklch(100% 0 0 / 0.08)' }}
                         role="meter" aria-valuenow={skill.level} aria-valuemin={0} aria-valuemax={100}
-                        aria-label={`${skill.name}: level ${skill.level}`}>
+                        aria-label={skill.name} aria-valuetext={`Level ${skill.level} out of 100`}>
                         <motion.div
                           className="absolute inset-y-0 left-0 rounded-full"
                           initial={{ width: '0%' }}

@@ -10,7 +10,7 @@
   --color-green:        oklch(83% 0.22 155);
   --color-orange:       oklch(70% 0.19 42);
   --color-text:         oklch(95% 0.01 240);
-  --color-text-dim:     oklch(65% 0.04 240);
+  --color-text-dim:     oklch(72% 0.04 240);
   --color-text-muted:   oklch(45% 0.04 240);
   --color-glass:        oklch(100% 0 0 / 0.07);
   --color-glass-hover:  oklch(100% 0 0 / 0.12);
@@ -210,5 +210,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse-glow, .float-anim, .crt-flicker { animation: none; }
+  .pulse-glow, .float-anim, .crt-flicker, .blink, .crt-power-on { animation: none; }
+  .project-card:hover { transform: none; }
 }

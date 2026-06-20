@@ -1,8 +1,19 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 
 export default function Template({ children }: { children: React.ReactNode }) {
+  const [reduced, setReduced] = useState(false)
+
+  useEffect(() => {
+    setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  }, [])
+
+  if (reduced) {
+    return <>{children}</>
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
