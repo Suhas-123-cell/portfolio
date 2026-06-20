@@ -7,6 +7,7 @@ export type Skill = {
 export const skills: Skill[] = [
   { name: 'Machine Learning', level: 85, category: 'AI/ML'    },
   { name: 'AI Agents',        level: 88, category: 'AI/ML'    },
+  { name: 'Agentic AI',       level: 86, category: 'AI/ML'    },
   { name: 'RAG / NLP',        level: 82, category: 'AI/ML'    },
   { name: 'LLM Prompting',    level: 90, category: 'AI/ML'    },
   { name: 'Python',           level: 92, category: 'Backend'  },
