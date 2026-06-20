@@ -8,7 +8,7 @@ export const about = {
   specialAbility: 'SHIPS AT 3AM',
   bio: [
     "I build things that think.",
-    "My stack leans AI-heavy: computer vision pipelines, RAG systems, LLM hallucination detection. The frontend side runs React Native and Next.js. FastAPI glues everything together.",
+    "My stack leans AI-heavy: computer vision pipelines, RAG systems, LLM hallucination detection. The frontend side runs React and React Native. FastAPI glues everything together.",
     "Recent work: a CCTV analytics system for retail (YOLOv8 + FastAPI), a group habit tracker with Gemini AI, and an agentic hallucination-checker for LLM outputs.",
     "I believe the best software is the kind that solves a real problem, ships fast, and doesn't need a manual.",
   ],
