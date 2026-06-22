@@ -17,6 +17,7 @@ export default async function handler(
     headers: {
       Authorization: `Bearer ${process.env.FISH_API_KEY}`,
       'Content-Type': 'application/json',
+      model: 's2-pro',
     },
     body: JSON.stringify({
       text: text.trim(),
