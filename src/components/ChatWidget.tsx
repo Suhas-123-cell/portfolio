@@ -8,26 +8,16 @@ type Message = {
   audioLoading?: boolean
 }
 
-const TTS_SPACE = import.meta.env.VITE_TTS_SPACE_URL as string | undefined
-
 async function fetchTTS(text: string): Promise<string | null> {
-  if (!TTS_SPACE) return null
   try {
-    const r = await fetch(`${TTS_SPACE}/run/synthesize`, {
+    const r = await fetch('/api/tts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: [text] }),
+      body: JSON.stringify({ text }),
     })
-    const json = await r.json() as { data: unknown[] }
-    const item = json.data?.[0]
-    if (!item) return null
-    if (typeof item === 'string') return item
-    if (typeof item === 'object' && item !== null) {
-      if ('url' in item) return (item as { url: string }).url
-      // Gradio 4.x returns { name: "/tmp/xxx.wav", is_file: true }
-      if ('name' in item) return `${TTS_SPACE}/file=${(item as { name: string }).name}`
-    }
-    return null
+    if (!r.ok) return null
+    const blob = await r.blob()
+    return URL.createObjectURL(blob)
   } catch {
     return null
   }
@@ -88,11 +78,10 @@ export default function ChatWidget() {
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: reply,
-        audioLoading: !!TTS_SPACE,
+        audioLoading: true,
       }])
 
-      if (TTS_SPACE) {
-        fetchTTS(reply).then(url => {
+      fetchTTS(reply).then(url => {
           setMessages(prev => prev.map((m, i) =>
             i === assistantIndex ? { ...m, audioUrl: url ?? undefined, audioLoading: false } : m
           ))
@@ -101,7 +90,6 @@ export default function ChatWidget() {
             audioRef.current.play().catch(() => {})
           }
         })
-      }
     } catch {
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -212,10 +200,10 @@ export default function ChatWidget() {
                   Ask Suhas
                 </div>
                 <div className="text-[10px] font-sora flex items-center gap-1.5"
-                  style={{ color: TTS_SPACE ? 'oklch(83% 0.22 155)' : 'oklch(60% 0.04 240)' }}>
+                  style={{ color: 'oklch(83% 0.22 155)' }}>
                   <span className="w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ background: TTS_SPACE ? 'oklch(83% 0.22 155)' : 'oklch(60% 0.04 240)' }} />
-                  {TTS_SPACE ? 'Voice enabled' : 'Text only'}
+                    style={{ background: 'oklch(83% 0.22 155)' }} />
+                  Voice enabled
                 </div>
               </div>
             </div>
@@ -238,7 +226,7 @@ export default function ChatWidget() {
                       }}>
                       {m.content}
                     </div>
-                    {m.role === 'assistant' && TTS_SPACE && (
+                    {m.role === 'assistant' && (
                       <div className="mt-1 ml-1 h-4">
                         {m.audioLoading && (
                           <span className="text-[9px] font-sora" style={{ color: 'oklch(60% 0.04 240)' }}>

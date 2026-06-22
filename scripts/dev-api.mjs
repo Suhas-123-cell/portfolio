@@ -31,28 +31,44 @@ const server = createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
-  if (req.url !== '/api/chat' || req.method !== 'POST') {
-    res.writeHead(404); res.end(); return
-  }
+  if (req.method !== 'POST') { res.writeHead(405); res.end(); return }
 
   let body = ''
   req.on('data', c => body += c)
   req.on('end', async () => {
     try {
-      const { message, history = [] } = JSON.parse(body)
-      const completion = await groq.chat.completions.create({
-        model: 'llama-3.1-8b-instant',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          ...history.slice(-6),
-          { role: 'user', content: message },
-        ],
-        max_tokens: 120,
-        temperature: 0.7,
-      })
-      const text = completion.choices[0]?.message?.content ?? ''
-      res.writeHead(200, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ text }))
+      if (req.url === '/api/chat') {
+        const { message, history = [] } = JSON.parse(body)
+        const completion = await groq.chat.completions.create({
+          model: 'llama-3.1-8b-instant',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...history.slice(-6),
+            { role: 'user', content: message },
+          ],
+          max_tokens: 120,
+          temperature: 0.7,
+        })
+        const text = completion.choices[0]?.message?.content ?? ''
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ text }))
+      } else if (req.url === '/api/tts') {
+        const { text } = JSON.parse(body)
+        const r = await fetch('https://api.fish.audio/v1/tts', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${process.env.FISH_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text, reference_id: process.env.FISH_VOICE_ID, format: 'mp3', latency: 'normal' }),
+        })
+        if (!r.ok) { res.writeHead(502); res.end(); return }
+        const buf = Buffer.from(await r.arrayBuffer())
+        res.writeHead(200, { 'Content-Type': 'audio/mpeg' })
+        res.end(buf)
+      } else {
+        res.writeHead(404); res.end()
+      }
     } catch (e) {
       res.writeHead(500, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify({ error: String(e) }))
