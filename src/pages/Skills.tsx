@@ -26,7 +26,7 @@ export default function Skills() {
           </p>
         </motion.div>
 
-        <div className="max-w-xl space-y-6">
+        <div className="grid xl:grid-cols-2 gap-4 max-w-4xl">
           {CATS.map((cat, ci) => {
             const catSkills = skills.filter(s => s.category === cat)
             if (!catSkills.length) return null
@@ -53,8 +53,8 @@ export default function Skills() {
                             LV.{skill.level}
                           </span>
                         </div>
-                        <div className="relative h-2 rounded-full overflow-hidden"
-                          style={{ background: 'oklch(100% 0 0 / 0.08)' }}
+                        <div className="relative h-3 rounded-full overflow-hidden"
+                          style={{ background: 'oklch(100% 0 0 / 0.14)' }}
                           role="meter" aria-valuenow={skill.level} aria-valuemin={0} aria-valuemax={100}
                           aria-label={skill.name} aria-valuetext={`Level ${skill.level} out of 100`}>
                           <motion.div

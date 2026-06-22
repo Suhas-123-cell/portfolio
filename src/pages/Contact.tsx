@@ -37,64 +37,120 @@ const LINKS = [
   },
 ]
 
+const SEEKING = [
+  { label: 'Role',      value: 'AI / ML Engineer · Fullstack Dev' },
+  { label: 'Location',  value: 'India (IST) · Open to Remote'     },
+  { label: 'Available', value: 'Immediately'                       },
+  { label: 'Response',  value: '< 24 hours'                        },
+]
+
 export default function Contact() {
   return (
     <PageTransition>
       <main id="main" className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12">
-        <div className="max-w-lg">
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }} className="mb-8">
-            <div className="text-[10px] font-sora tracking-[0.3em] uppercase mb-1"
-              style={{ color: 'oklch(75% 0.18 185)' }}>◈ Terminal</div>
-            <h1 className="font-bebas text-4xl md:text-5xl" style={{ color: 'oklch(95% 0.01 240)' }}>Contact</h1>
-            <p className="mt-1 text-sm font-sora" style={{ color: 'oklch(65% 0.04 240)' }}>
-              Open to AI / fullstack roles and interesting problems.
-            </p>
-          </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}>
-            <GlassPanel className="p-5 md:p-6 mb-4 teal-box-glow">
-              <div className="text-[9px] font-sora uppercase tracking-[0.25em] mb-4"
-                style={{ color: 'oklch(65% 0.04 240)' }}>Reach me at</div>
-              <div className="space-y-2">
-                {LINKS.map((link, i) => (
-                  <motion.a key={link.label}
-                    href={link.href}
-                    target={link.href.startsWith('mailto') ? undefined : '_blank'}
-                    rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                    initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 + i * 0.08 }}
-                    className="flex items-center gap-4 p-3 rounded-xl transition-colors
-                               focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                               hover:bg-white/5 group"
-                    style={{ outlineColor: 'oklch(75% 0.18 185)' }}>
-                    <div className="w-9 h-9 rounded-lg flex items-center justify-center glass-sm shrink-0"
-                      style={{ color: 'oklch(75% 0.18 185)' }}>
-                      {link.icon}
-                    </div>
-                    <div>
-                      <div className="text-[9px] font-sora uppercase tracking-wider"
-                        style={{ color: 'oklch(65% 0.04 240)' }}>{link.label}</div>
-                      <div className="text-sm font-sora font-semibold transition-colors"
-                        style={{ color: 'oklch(85% 0.20 185)' }}>{link.value}</div>
-                    </div>
-                    <span className="ml-auto text-sm" style={{ color: 'oklch(65% 0.04 240)' }}>↗</span>
-                  </motion.a>
-                ))}
-              </div>
-            </GlassPanel>
-          </motion.div>
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }} className="mb-8">
+          <div className="text-[10px] font-sora tracking-[0.3em] uppercase mb-1"
+            style={{ color: 'oklch(75% 0.18 185)' }}>◈ Terminal</div>
+          <h1 className="font-bebas text-4xl md:text-5xl" style={{ color: 'oklch(95% 0.01 240)' }}>Contact</h1>
+          <p className="mt-1 text-sm font-sora" style={{ color: 'oklch(65% 0.04 240)' }}>
+            Open to AI / fullstack roles and interesting problems.
+          </p>
+        </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.35 }}>
-            <GlassPanel size="sm" className="p-4">
-              <p className="text-xs font-sora leading-relaxed" style={{ color: 'oklch(65% 0.04 240)' }}>
-                Best way to reach me is email — I reply within 24 hours.
-                For code questions, GitHub DMs are open too.
-              </p>
-            </GlassPanel>
-          </motion.div>
+        <div className="flex flex-col xl:flex-row gap-5 max-w-4xl">
+
+          {/* Left — contact links */}
+          <div className="flex-1 max-w-lg space-y-4">
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}>
+              <GlassPanel className="p-5 md:p-6 teal-box-glow">
+                <div className="text-[9px] font-sora uppercase tracking-[0.25em] mb-4"
+                  style={{ color: 'oklch(65% 0.04 240)' }}>Reach me at</div>
+                <div className="space-y-2">
+                  {LINKS.map((link, i) => (
+                    <motion.a key={link.label}
+                      href={link.href}
+                      target={link.href.startsWith('mailto') ? undefined : '_blank'}
+                      rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
+                      initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 + i * 0.08 }}
+                      className="flex items-center gap-4 p-3 rounded-xl transition-colors
+                                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                                 hover:bg-white/5 group"
+                      style={{ outlineColor: 'oklch(75% 0.18 185)' }}>
+                      <div className="w-9 h-9 rounded-lg flex items-center justify-center glass-sm shrink-0"
+                        style={{ color: 'oklch(75% 0.18 185)' }}>
+                        {link.icon}
+                      </div>
+                      <div>
+                        <div className="text-[9px] font-sora uppercase tracking-wider"
+                          style={{ color: 'oklch(65% 0.04 240)' }}>{link.label}</div>
+                        <div className="text-sm font-sora font-semibold transition-colors"
+                          style={{ color: 'oklch(85% 0.20 185)' }}>{link.value}</div>
+                      </div>
+                      <span className="ml-auto text-sm" style={{ color: 'oklch(65% 0.04 240)' }}>↗</span>
+                    </motion.a>
+                  ))}
+                </div>
+              </GlassPanel>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}>
+              <GlassPanel size="sm" className="p-4">
+                <p className="text-xs font-sora leading-relaxed" style={{ color: 'oklch(65% 0.04 240)' }}>
+                  Best way to reach me is email — I reply within 24 hours.
+                  For code questions, GitHub DMs are open too.
+                </p>
+              </GlassPanel>
+            </motion.div>
+          </div>
+
+          {/* Right — what I'm looking for */}
+          <div className="xl:w-72 space-y-4">
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}>
+              <GlassPanel className="p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="w-2 h-2 rounded-full pulse-glow shrink-0"
+                    style={{ background: 'oklch(83% 0.22 155)' }} />
+                  <span className="text-[10px] font-sora uppercase tracking-wider"
+                    style={{ color: 'oklch(83% 0.22 155)' }}>Currently Seeking</span>
+                </div>
+                <div className="space-y-3">
+                  {SEEKING.map((s) => (
+                    <div key={s.label} className="flex flex-col gap-0.5">
+                      <span className="text-[9px] font-sora uppercase tracking-wider"
+                        style={{ color: 'oklch(60% 0.04 240)' }}>{s.label}</span>
+                      <span className="text-sm font-sora font-semibold"
+                        style={{ color: 'oklch(90% 0.01 240)' }}>{s.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </GlassPanel>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}>
+              <GlassPanel size="sm" className="p-4">
+                <div className="text-[9px] font-sora uppercase tracking-[0.25em] mb-2"
+                  style={{ color: 'oklch(65% 0.04 240)' }}>What I build</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {['AI Agents', 'RAG Systems', 'Computer Vision', 'FastAPI', 'React Native', 'LLM Pipelines'].map(tag => (
+                    <span key={tag} className="text-[9px] font-sora px-2 py-0.5 rounded-full"
+                      style={{
+                        background: 'oklch(75% 0.18 185 / 0.08)',
+                        color: 'oklch(75% 0.18 185)',
+                        border: '1px solid oklch(75% 0.18 185 / 0.2)',
+                      }}>{tag}</span>
+                  ))}
+                </div>
+              </GlassPanel>
+            </motion.div>
+          </div>
+
         </div>
       </main>
     </PageTransition>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <defs>
+    <radialGradient id="bg-a" cx="30%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#1a0808"/>
+      <stop offset="100%" stop-color="#08030a"/>
+    </radialGradient>
+    <radialGradient id="glow-a" cx="28%" cy="55%" r="50%">
+      <stop offset="0%" stop-color="#dc2626" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#dc2626" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orb-a" cx="72%" cy="45%" r="35%">
+      <stop offset="0%" stop-color="#7c1d1d" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#7c1d1d" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="300" fill="url(#bg-a)"/>
+  <rect width="800" height="300" fill="url(#glow-a)"/>
+  <rect width="800" height="300" fill="url(#orb-a)"/>
+
+  <!-- AR grid overlay -->
+  <g stroke="#dc2626" stroke-width="0.5" opacity="0.10">
+    <line x1="0" y1="75" x2="800" y2="75"/>
+    <line x1="0" y1="150" x2="800" y2="150"/>
+    <line x1="0" y1="225" x2="800" y2="225"/>
+    <line x1="100" y1="0" x2="100" y2="300"/>
+    <line x1="200" y1="0" x2="200" y2="300"/>
+    <line x1="300" y1="0" x2="300" y2="300"/>
+    <line x1="400" y1="0" x2="400" y2="300"/>
+    <line x1="500" y1="0" x2="500" y2="300"/>
+    <line x1="600" y1="0" x2="600" y2="300"/>
+    <line x1="700" y1="0" x2="700" y2="300"/>
+  </g>
+
+  <!-- Location pin graphic -->
+  <g transform="translate(655, 90)">
+    <circle cx="0" cy="-15" r="55" fill="none" stroke="#dc2626" stroke-width="1.5" opacity="0.25"/>
+    <circle cx="0" cy="-15" r="80" fill="none" stroke="#dc2626" stroke-width="0.8" opacity="0.12"/>
+    <circle cx="0" cy="-15" r="105" fill="none" stroke="#dc2626" stroke-width="0.5" opacity="0.07"/>
+    <path d="M0,-60 C-22,-60 -38,-44 -38,-22 C-38,12 0,75 0,75 C0,75 38,12 38,-22 C38,-44 22,-60 0,-60Z" fill="#dc2626" opacity="0.75"/>
+    <circle cx="0" cy="-22" r="14" fill="#08030a"/>
+    <line x1="-65" y1="-15" x2="-45" y2="-15" stroke="#dc2626" stroke-width="1" opacity="0.5"/>
+    <line x1="45" y1="-15" x2="65" y2="-15" stroke="#dc2626" stroke-width="1" opacity="0.5"/>
+    <line x1="0" y1="-80" x2="0" y2="-60" stroke="#dc2626" stroke-width="1" opacity="0.5"/>
+  </g>
+
+  <!-- Title -->
+  <text x="58" y="162" font-family="Impact, Arial, sans-serif" font-size="100" fill="#ffffff" letter-spacing="10" opacity="0.95">ANIGO</text>
+  <!-- Subtitle -->
+  <text x="60" y="198" font-family="Arial, sans-serif" font-size="13" fill="#dc2626" letter-spacing="5" opacity="0.85">AR ANIME COLLECTOR GAME</text>
+  <!-- Accent bar -->
+  <rect x="60" y="212" width="250" height="2" fill="#dc2626" opacity="0.7"/>
+
+  <!-- Tags -->
+  <g transform="translate(60, 232)">
+    <rect width="80" height="22" rx="4" fill="#dc2626" fill-opacity="0.12" stroke="#dc2626" stroke-width="0.8" stroke-opacity="0.45"/>
+    <text x="10" y="15" font-family="Arial, sans-serif" font-size="10" fill="#dc2626" opacity="0.85">React Native</text>
+    <rect x="90" y="0" width="55" height="22" rx="4" fill="#dc2626" fill-opacity="0.12" stroke="#dc2626" stroke-width="0.8" stroke-opacity="0.45"/>
+    <text x="100" y="15" font-family="Arial, sans-serif" font-size="10" fill="#dc2626" opacity="0.85">Supabase</text>
+    <rect x="155" y="0" width="45" height="22" rx="4" fill="#dc2626" fill-opacity="0.12" stroke="#dc2626" stroke-width="0.8" stroke-opacity="0.45"/>
+    <text x="163" y="15" font-family="Arial, sans-serif" font-size="10" fill="#dc2626" opacity="0.85">Expo</text>
+  </g>
+
+  <!-- Corner frames -->
+  <g stroke="#dc2626" stroke-width="1.5" fill="none" opacity="0.35">
+    <polyline points="10,10 10,45 45,45"/>
+    <polyline points="755,10 755,45 720,45"/>
+    <polyline points="10,290 10,255 45,255"/>
+    <polyline points="755,290 755,255 720,255"/>
+  </g>
+</svg>

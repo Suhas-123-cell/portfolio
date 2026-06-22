@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <defs>
+    <radialGradient id="bg-s" cx="65%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#071828"/>
+      <stop offset="100%" stop-color="#030c14"/>
+    </radialGradient>
+    <radialGradient id="glow-s" cx="65%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#00d9c4" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#00d9c4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="300" fill="url(#bg-s)"/>
+  <rect width="800" height="300" fill="url(#glow-s)"/>
+
+  <!-- Dot pattern top-right -->
+  <g fill="#00d9c4" opacity="0.08">
+    <circle cx="600" cy="30" r="2"/><circle cx="630" cy="30" r="2"/><circle cx="660" cy="30" r="2"/><circle cx="690" cy="30" r="2"/><circle cx="720" cy="30" r="2"/><circle cx="750" cy="30" r="2"/>
+    <circle cx="600" cy="55" r="2"/><circle cx="630" cy="55" r="2"/><circle cx="660" cy="55" r="2"/><circle cx="690" cy="55" r="2"/><circle cx="720" cy="55" r="2"/><circle cx="750" cy="55" r="2"/>
+    <circle cx="600" cy="80" r="2"/><circle cx="630" cy="80" r="2"/><circle cx="660" cy="80" r="2"/><circle cx="690" cy="80" r="2"/><circle cx="720" cy="80" r="2"/><circle cx="750" cy="80" r="2"/>
+  </g>
+
+  <!-- Chat bubbles right side -->
+  <g transform="translate(510, 52)">
+    <rect x="20" y="0" width="220" height="50" rx="14" fill="#00d9c4" fill-opacity="0.13" stroke="#00d9c4" stroke-width="1" stroke-opacity="0.45"/>
+    <rect x="35" y="17" width="140" height="8" rx="4" fill="#00d9c4" fill-opacity="0.4"/>
+    <rect x="35" y="31" width="90" height="6" rx="3" fill="#00d9c4" fill-opacity="0.2"/>
+    <polygon points="240,15 255,25 240,35" fill="#00d9c4" fill-opacity="0.13"/>
+  </g>
+
+  <g transform="translate(490, 118)">
+    <rect x="0" y="0" width="240" height="65" rx="14" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-width="1" stroke-opacity="0.12"/>
+    <rect x="15" y="16" width="170" height="8" rx="4" fill="#ffffff" fill-opacity="0.2"/>
+    <rect x="15" y="30" width="130" height="6" rx="3" fill="#ffffff" fill-opacity="0.12"/>
+    <rect x="15" y="42" width="100" height="6" rx="3" fill="#ffffff" fill-opacity="0.08"/>
+    <polygon points="0,20 -15,30 0,40" fill="#ffffff" fill-opacity="0.05"/>
+  </g>
+
+  <g transform="translate(530, 198)">
+    <rect x="20" y="0" width="200" height="44" rx="14" fill="#00d9c4" fill-opacity="0.10" stroke="#00d9c4" stroke-width="1" stroke-opacity="0.35"/>
+    <rect x="35" y="15" width="120" height="7" rx="3" fill="#00d9c4" fill-opacity="0.3"/>
+    <rect x="35" y="28" width="80" height="5" rx="2" fill="#00d9c4" fill-opacity="0.15"/>
+  </g>
+
+  <!-- Title -->
+  <text x="55" y="152" font-family="Impact, Arial, sans-serif" font-size="84" fill="#ffffff" letter-spacing="7" opacity="0.95">STAYCHAT</text>
+  <!-- Subtitle -->
+  <text x="57" y="188" font-family="Arial, sans-serif" font-size="12" fill="#00d9c4" letter-spacing="4" opacity="0.85">HOTEL RAG CHATBOT · LIVE ON HUGGING FACE</text>
+  <!-- Accent bar -->
+  <rect x="57" y="203" width="340" height="2" fill="#00d9c4" opacity="0.65"/>
+
+  <!-- Tags -->
+  <g transform="translate(57, 222)">
+    <rect width="45" height="22" rx="4" fill="#00d9c4" fill-opacity="0.10" stroke="#00d9c4" stroke-width="0.8" stroke-opacity="0.45"/>
+    <text x="8" y="15" font-family="Arial, sans-serif" font-size="10" fill="#00d9c4" opacity="0.85">FAISS</text>
+    <rect x="55" y="0" width="45" height="22" rx="4" fill="#00d9c4" fill-opacity="0.10" stroke="#00d9c4" stroke-width="0.8" stroke-opacity="0.45"/>
+    <text x="63" y="15" font-family="Arial, sans-serif" font-size="10" fill="#00d9c4" opacity="0.85">BM25</text>
+    <rect x="110" y="0" width="40" height="22" rx="4" fill="#00d9c4" fill-opacity="0.10" stroke="#00d9c4" stroke-width="0.8" stroke-opacity="0.45"/>
+    <text x="118" y="15" font-family="Arial, sans-serif" font-size="10" fill="#00d9c4" opacity="0.85">Groq</text>
+    <rect x="160" y="0" width="58" height="22" rx="4" fill="#00d9c4" fill-opacity="0.10" stroke="#00d9c4" stroke-width="0.8" stroke-opacity="0.45"/>
+    <text x="168" y="15" font-family="Arial, sans-serif" font-size="10" fill="#00d9c4" opacity="0.85">LLaMA 3</text>
+  </g>
+
+  <!-- Corner frames -->
+  <g stroke="#00d9c4" stroke-width="1.5" fill="none" opacity="0.3">
+    <polyline points="10,10 10,45 45,45"/>
+    <polyline points="755,10 755,45 720,45"/>
+    <polyline points="10,290 10,255 45,255"/>
+    <polyline points="755,290 755,255 720,255"/>
+  </g>
+</svg>

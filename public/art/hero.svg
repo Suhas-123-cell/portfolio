@@ -6,11 +6,11 @@
       <stop offset="100%" stop-color="#030609"/>
     </radialGradient>
     <radialGradient id="glow-teal" cx="65%" cy="70%" r="45%">
-      <stop offset="0%" stop-color="#00d9c4" stop-opacity="0.18"/>
+      <stop offset="0%" stop-color="#00d9c4" stop-opacity="0.38"/>
       <stop offset="100%" stop-color="#00d9c4" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="glow-orange" cx="20%" cy="85%" r="30%">
-      <stop offset="0%" stop-color="#ff7a2f" stop-opacity="0.12"/>
+      <stop offset="0%" stop-color="#ff7a2f" stop-opacity="0.22"/>
       <stop offset="100%" stop-color="#ff7a2f" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="horizon" x1="0" y1="0" x2="0" y2="1">
