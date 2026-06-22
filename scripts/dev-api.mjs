@@ -1,0 +1,63 @@
+// Local dev API server — proxied from Vite at /api -> http://localhost:3001
+// Run: node scripts/dev-api.mjs
+import { createServer } from 'node:http'
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+import Groq from 'groq-sdk'
+
+const __dir = dirname(fileURLToPath(import.meta.url))
+
+// Load .env manually
+try {
+  const env = readFileSync(join(__dir, '../.env'), 'utf8')
+  for (const line of env.split('\n')) {
+    const m = line.match(/^([A-Z_]+)=(.+)$/)
+    if (m) process.env[m[1]] = m[2].trim()
+  }
+} catch {}
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
+
+const SYSTEM_PROMPT = `You are Suhas Choudary, an AI engineer and full-stack developer based in India. Answer questions about yourself in first person. Be conversational and concise — 2-3 sentences max.
+
+Skills: Python, FastAPI, React, React Native, RAG, LLMs, Computer Vision, Supabase.
+Projects: StreakFight (group habit tracker, RN+FastAPI+Gemini), HALLU-CHECK (hallucination detector, DeBERTa), Purplle Analytics (CCTV retail analytics, YOLOv8), ANIGO (AR mobile game), Venture Radar (4-agent B2B scout), StayChat (hotel RAG chatbot, live on HF).
+Available: immediately, open to AI/ML and fullstack roles, India IST, remote OK.
+Email: suhaschowdary25@gmail.com  GitHub: github.com/Suhas-123-cell`
+
+const server = createServer(async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+
+  if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
+  if (req.url !== '/api/chat' || req.method !== 'POST') {
+    res.writeHead(404); res.end(); return
+  }
+
+  let body = ''
+  req.on('data', c => body += c)
+  req.on('end', async () => {
+    try {
+      const { message, history = [] } = JSON.parse(body)
+      const completion = await groq.chat.completions.create({
+        model: 'llama-3.1-8b-instant',
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          ...history.slice(-6),
+          { role: 'user', content: message },
+        ],
+        max_tokens: 120,
+        temperature: 0.7,
+      })
+      const text = completion.choices[0]?.message?.content ?? ''
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ text }))
+    } catch (e) {
+      res.writeHead(500, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: String(e) }))
+    }
+  })
+})
+
+server.listen(3001, () => console.log('API dev server → http://localhost:3001'))

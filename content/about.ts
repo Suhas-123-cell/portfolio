@@ -1,5 +1,5 @@
 export const about = {
-  name: 'SUHAS CHOWDARY',
+  name: 'SUHAS CHOUDARY',
   handle: 'suhas-123-cell',
   class: 'AI ENGINEER / FULL STACK DEV',
   level: 22,

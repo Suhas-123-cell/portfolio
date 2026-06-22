@@ -8,6 +8,7 @@ import About from './pages/About'
 import Skills from './pages/Skills'
 import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
+import ChatWidget from './components/ChatWidget'
 
 function AnimatedRoutes() {
   const location = useLocation()
@@ -35,6 +36,7 @@ export default function App() {
         </a>
         <NavRail />
         <AnimatedRoutes />
+        <ChatWidget />
       </MotionConfig>
     </BrowserRouter>
   )

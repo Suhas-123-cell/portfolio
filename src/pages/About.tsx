@@ -50,7 +50,7 @@ export default function About() {
                 </div>
                 <div>
                   <div className="font-bebas text-2xl md:text-3xl" style={{ color: 'oklch(95% 0.01 240)' }}>
-                    Suhas Chowdary
+                    Suhas Choudary
                   </div>
                   <div className="text-sm font-sora mt-0.5" style={{ color: 'oklch(75% 0.18 185)' }}>
                     {about.class}
