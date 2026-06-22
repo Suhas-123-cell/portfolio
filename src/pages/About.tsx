@@ -13,10 +13,10 @@ const ATTRS = [
 ]
 
 const QUICK_STATS = [
-  { label: 'Repos shipped', value: '18'   },
-  { label: 'AI projects',   value: '8'    },
-  { label: 'Coffee / day',  value: '4☕'  },
-  { label: 'Lines deleted', value: '9001' },
+  { label: 'Repos shipped', value: '18'  },
+  { label: 'AI projects',   value: '8'   },
+  { label: 'Coffee / day',  value: '4☕' },
+  { label: 'Years coding',  value: '3'   },
 ]
 
 export default function About() {

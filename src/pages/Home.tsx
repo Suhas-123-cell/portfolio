@@ -224,7 +224,7 @@ export default function Home() {
                     }}>
                     <div className="text-[9px] font-sora uppercase tracking-wider mb-0.5"
                       style={{ color: 'oklch(83% 0.22 155)' }}>
-                      ▶ Currently Building
+                      ▶ Latest Project
                     </div>
                     <div className="text-sm font-sora font-semibold" style={{ color: 'oklch(95% 0.01 240)' }}>
                       {featured.title}
