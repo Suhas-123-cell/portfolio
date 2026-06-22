@@ -22,7 +22,11 @@ async function fetchTTS(text: string): Promise<string | null> {
     const item = json.data?.[0]
     if (!item) return null
     if (typeof item === 'string') return item
-    if (typeof item === 'object' && item !== null && 'url' in item) return (item as { url: string }).url
+    if (typeof item === 'object' && item !== null) {
+      if ('url' in item) return (item as { url: string }).url
+      // Gradio 4.x returns { name: "/tmp/xxx.wav", is_file: true }
+      if ('name' in item) return `${TTS_SPACE}/file=${(item as { name: string }).name}`
+    }
     return null
   } catch {
     return null
