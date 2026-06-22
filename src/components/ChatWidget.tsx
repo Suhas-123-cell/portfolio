@@ -36,6 +36,7 @@ export default function ChatWidget() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [listening, setListening] = useState(false)
+  const [voiceEnabled, setVoiceEnabled] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,10 +79,10 @@ export default function ChatWidget() {
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: reply,
-        audioLoading: true,
+        audioLoading: voiceEnabled,
       }])
 
-      fetchTTS(reply).then(url => {
+      if (voiceEnabled) fetchTTS(reply).then(url => {
           setMessages(prev => prev.map((m, i) =>
             i === assistantIndex ? { ...m, audioUrl: url ?? undefined, audioLoading: false } : m
           ))
@@ -199,12 +200,16 @@ export default function ChatWidget() {
                 <div className="text-sm font-sora font-semibold" style={{ color: 'oklch(92% 0.01 240)' }}>
                   Ask Suhas
                 </div>
-                <div className="text-[10px] font-sora flex items-center gap-1.5"
-                  style={{ color: 'oklch(83% 0.22 155)' }}>
+                <button
+                  onClick={() => setVoiceEnabled(v => !v)}
+                  className="text-[10px] font-sora flex items-center gap-1.5 cursor-pointer"
+                  style={{ color: voiceEnabled ? 'oklch(83% 0.22 155)' : 'oklch(55% 0.04 240)', background: 'none', border: 'none', padding: 0 }}
+                  title={voiceEnabled ? 'Click to disable voice' : 'Click to enable voice'}
+                >
                   <span className="w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ background: 'oklch(83% 0.22 155)' }} />
-                  Voice enabled
-                </div>
+                    style={{ background: voiceEnabled ? 'oklch(83% 0.22 155)' : 'oklch(55% 0.04 240)' }} />
+                  {voiceEnabled ? 'Voice on' : 'Voice off'}
+                </button>
               </div>
             </div>
 
