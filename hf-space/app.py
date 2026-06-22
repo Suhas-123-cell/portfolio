@@ -1,11 +1,13 @@
+import os
+os.environ["COQUI_TOS_AGREED"] = "1"  # accept XTTS-v2 non-commercial license headlessly
+
 import gradio as gr
 from TTS.api import TTS
 import tempfile
 
-# XTTS-v2 — multilingual voice cloning
 tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2")
 
-SPEAKER_WAV = "suhas.wav"  # committed alongside this file
+SPEAKER_WAV = "suhas.wav"
 
 def synthesize(text: str) -> str:
     if not text or not text.strip():
