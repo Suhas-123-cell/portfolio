@@ -14,7 +14,6 @@ const STATS = [
   { label: 'Repos',       value: '18' },
   { label: 'AI Projects', value: '8'  },
   { label: 'Languages',   value: '3'  },
-  { label: 'Shipped',     value: '∞'  },
 ]
 
 const SOCIAL = [
@@ -251,44 +250,6 @@ export default function Home() {
                 </GlassPanel>
               </motion.div>
 
-              {/* Demo card */}
-              <motion.div
-                initial={{ opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.38 }}
-              >
-                <GlassPanel className="overflow-hidden project-card"
-                  style={{ border: '1px solid oklch(100% 0 0 / 0.12)' }}>
-                  <div className="relative h-28 overflow-hidden" style={{ background: 'oklch(12% 0.02 240)' }}>
-                    <img src={featured.image} alt={`${featured.title} preview`}
-                      className="w-full h-full object-cover opacity-70" loading="lazy" />
-                    <div className="absolute inset-0"
-                      style={{ background: 'linear-gradient(to top, oklch(8% 0.025 240 / 0.65), transparent)' }} />
-                    <span className="absolute top-2 left-2 text-[9px] font-sora tracking-wider uppercase px-2 py-0.5 rounded-full"
-                      style={{
-                        background: 'oklch(83% 0.22 155 / 0.15)',
-                        color: 'oklch(83% 0.22 155)',
-                        border: '1px solid oklch(83% 0.22 155 / 0.3)',
-                      }}>
-                      ★ Featured
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <div className="text-[10px] font-sora mb-1" style={{ color: 'oklch(65% 0.04 240)' }}>
-                      View Demo
-                    </div>
-                    <Link to={featured.demo ?? `/projects/${featured.slug}`}
-                      {...(featured.demo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      className="flex items-center gap-2 text-sm font-sora font-semibold
-                                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded"
-                      style={{ color: 'oklch(85% 0.20 185)', outlineColor: 'oklch(75% 0.18 185)' }}>
-                      <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden="true">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
-                      </svg>
-                      {featured.demo ? 'Open Live Demo' : 'View on GitHub'}
-                    </Link>
-                  </div>
-                </GlassPanel>
-              </motion.div>
             </div>
           </div>
         </div>
