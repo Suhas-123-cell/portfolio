@@ -196,21 +196,40 @@ export default function ChatWidget() {
                 }}>
                 S
               </div>
-              <div>
+              <div className="flex-1">
                 <div className="text-sm font-sora font-semibold" style={{ color: 'oklch(92% 0.01 240)' }}>
                   Ask Suhas
                 </div>
-                <button
-                  onClick={() => setVoiceEnabled(v => !v)}
-                  className="text-[10px] font-sora flex items-center gap-1.5 cursor-pointer"
-                  style={{ color: voiceEnabled ? 'oklch(83% 0.22 155)' : 'oklch(55% 0.04 240)', background: 'none', border: 'none', padding: 0 }}
-                  title={voiceEnabled ? 'Click to disable voice' : 'Click to enable voice'}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ background: voiceEnabled ? 'oklch(83% 0.22 155)' : 'oklch(55% 0.04 240)' }} />
-                  {voiceEnabled ? 'Voice on' : 'Voice off'}
-                </button>
               </div>
+              {/* Voice toggle switch */}
+              <button
+                onClick={() => setVoiceEnabled(v => !v)}
+                className="flex items-center gap-2 shrink-0"
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                title={voiceEnabled ? 'Disable voice' : 'Enable voice'}
+                aria-label={voiceEnabled ? 'Disable voice' : 'Enable voice'}
+              >
+                <span className="text-[10px] font-sora"
+                  style={{ color: voiceEnabled ? 'oklch(75% 0.18 185)' : 'oklch(50% 0.04 240)' }}>
+                  Voice
+                </span>
+                <span style={{
+                  position: 'relative', display: 'inline-flex', alignItems: 'center',
+                  width: '28px', height: '16px', borderRadius: '8px',
+                  background: voiceEnabled ? 'oklch(75% 0.18 185)' : 'oklch(30% 0.04 240)',
+                  transition: 'background 0.2s',
+                  border: '1px solid oklch(100% 0 0 / 0.1)',
+                }}>
+                  <span style={{
+                    position: 'absolute',
+                    left: voiceEnabled ? '14px' : '2px',
+                    width: '10px', height: '10px', borderRadius: '50%',
+                    background: 'white',
+                    transition: 'left 0.2s',
+                    boxShadow: '0 1px 3px oklch(0% 0 0 / 0.4)',
+                  }} />
+                </span>
+              </button>
             </div>
 
             {/* Messages */}
