@@ -4,23 +4,6 @@ import { motion, AnimatePresence } from 'motion/react'
 type Message = {
   role: 'user' | 'assistant'
   content: string
-  audioUrl?: string
-  audioLoading?: boolean
-}
-
-async function fetchTTS(text: string): Promise<string | null> {
-  try {
-    const r = await fetch('/api/tts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
-    })
-    if (!r.ok) return null
-    const blob = await r.blob()
-    return URL.createObjectURL(blob)
-  } catch {
-    return null
-  }
 }
 
 const SUGGESTIONS = [
@@ -36,12 +19,17 @@ export default function ChatWidget() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [listening, setListening] = useState(false)
-  const [voiceEnabled, setVoiceEnabled] = useState(false)
+  const [micSupported, setMicSupported] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const w = window as any
+    setMicSupported(!!(w.SpeechRecognition || w.webkitSpeechRecognition))
+  }, [])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -62,7 +50,6 @@ export default function ChatWidget() {
     if (!trimmed || loading) return
 
     const history = messages.map(m => ({ role: m.role, content: m.content }))
-    const assistantIndex = messages.length + 1
 
     setMessages(prev => [...prev, { role: 'user', content: trimmed }])
     setInput('')
@@ -75,22 +62,7 @@ export default function ChatWidget() {
         body: JSON.stringify({ message: trimmed, history }),
       })
       const { text: reply } = await r.json() as { text: string }
-
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: reply,
-        audioLoading: voiceEnabled,
-      }])
-
-      if (voiceEnabled) fetchTTS(reply).then(url => {
-          setMessages(prev => prev.map((m, i) =>
-            i === assistantIndex ? { ...m, audioUrl: url ?? undefined, audioLoading: false } : m
-          ))
-          if (url) {
-            audioRef.current = new Audio(url)
-            audioRef.current.play().catch(() => {})
-          }
-        })
+      setMessages(prev => [...prev, { role: 'assistant', content: reply }])
     } catch {
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -196,83 +168,32 @@ export default function ChatWidget() {
                 }}>
                 S
               </div>
-              <div className="flex-1">
+              <div>
                 <div className="text-sm font-sora font-semibold" style={{ color: 'oklch(92% 0.01 240)' }}>
                   Ask Suhas
                 </div>
+                <div className="text-[10px] font-sora" style={{ color: 'oklch(55% 0.04 240)' }}>
+                  AI Engineer · Full Stack Dev
+                </div>
               </div>
-              {/* Voice toggle switch */}
-              <button
-                onClick={() => setVoiceEnabled(v => !v)}
-                className="flex items-center gap-2 shrink-0"
-                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-                title={voiceEnabled ? 'Disable voice' : 'Enable voice'}
-                aria-label={voiceEnabled ? 'Disable voice' : 'Enable voice'}
-              >
-                <span className="text-[10px] font-sora"
-                  style={{ color: voiceEnabled ? 'oklch(75% 0.18 185)' : 'oklch(50% 0.04 240)' }}>
-                  Voice
-                </span>
-                <span style={{
-                  position: 'relative', display: 'inline-flex', alignItems: 'center',
-                  width: '28px', height: '16px', borderRadius: '8px',
-                  background: voiceEnabled ? 'oklch(75% 0.18 185)' : 'oklch(30% 0.04 240)',
-                  transition: 'background 0.2s',
-                  border: '1px solid oklch(100% 0 0 / 0.1)',
-                }}>
-                  <span style={{
-                    position: 'absolute',
-                    left: voiceEnabled ? '14px' : '2px',
-                    width: '10px', height: '10px', borderRadius: '50%',
-                    background: 'white',
-                    transition: 'left 0.2s',
-                    boxShadow: '0 1px 3px oklch(0% 0 0 / 0.4)',
-                  }} />
-                </span>
-              </button>
             </div>
 
             {/* Messages */}
             <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" style={{ minHeight: 0 }}>
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className="max-w-[85%]">
-                    <div className="text-sm font-sora leading-relaxed px-3 py-2 rounded-2xl"
-                      style={m.role === 'user' ? {
-                        background: 'oklch(75% 0.18 185)',
-                        color: 'oklch(8% 0.025 240)',
-                        borderBottomRightRadius: '4px',
-                      } : {
-                        background: 'oklch(100% 0 0 / 0.07)',
-                        color: 'oklch(85% 0.01 240)',
-                        border: '1px solid oklch(100% 0 0 / 0.1)',
-                        borderBottomLeftRadius: '4px',
-                      }}>
-                      {m.content}
-                    </div>
-                    {m.role === 'assistant' && (
-                      <div className="mt-1 ml-1 h-4">
-                        {m.audioLoading && (
-                          <span className="text-[9px] font-sora" style={{ color: 'oklch(60% 0.04 240)' }}>
-                            🔊 loading voice…
-                          </span>
-                        )}
-                        {m.audioUrl && !m.audioLoading && (
-                          <button
-                            onClick={() => {
-                              audioRef.current = new Audio(m.audioUrl)
-                              audioRef.current.play().catch(() => {})
-                            }}
-                            className="text-[9px] font-sora flex items-center gap-1 hover:opacity-80 transition-opacity"
-                            style={{ color: 'oklch(75% 0.18 185)' }}>
-                            <svg viewBox="0 0 20 20" fill="currentColor" className="w-3 h-3">
-                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
-                            </svg>
-                            replay voice
-                          </button>
-                        )}
-                      </div>
-                    )}
+                  <div className="max-w-[85%] text-sm font-sora leading-relaxed px-3 py-2 rounded-2xl"
+                    style={m.role === 'user' ? {
+                      background: 'oklch(75% 0.18 185)',
+                      color: 'oklch(8% 0.025 240)',
+                      borderBottomRightRadius: '4px',
+                    } : {
+                      background: 'oklch(100% 0 0 / 0.07)',
+                      color: 'oklch(85% 0.01 240)',
+                      border: '1px solid oklch(100% 0 0 / 0.1)',
+                      borderBottomLeftRadius: '4px',
+                    }}>
+                    {m.content}
                   </div>
                 </div>
               ))}
@@ -329,18 +250,22 @@ export default function ChatWidget() {
                   disabled={loading}
                 />
 
-                {/* Mic */}
-                <button onClick={toggleMic}
-                  className="w-7 h-7 flex items-center justify-center rounded-lg transition-all shrink-0"
-                  style={{
-                    background: listening ? 'oklch(60% 0.22 25 / 0.15)' : 'transparent',
-                    color: listening ? 'oklch(60% 0.22 25)' : 'oklch(55% 0.04 240)',
-                  }}
-                  aria-label={listening ? 'Stop listening' : 'Speak your question'}>
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                    <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd"/>
-                  </svg>
-                </button>
+                {/* Mic — only shown when browser supports Web Speech API (not iOS) */}
+                {micSupported && (
+                  <button
+                    onPointerDown={e => { e.preventDefault(); toggleMic() }}
+                    className="w-8 h-8 flex items-center justify-center rounded-lg transition-all shrink-0 touch-manipulation"
+                    style={{
+                      background: listening ? 'oklch(60% 0.22 25 / 0.2)' : 'transparent',
+                      color: listening ? 'oklch(60% 0.22 25)' : 'oklch(55% 0.04 240)',
+                      border: listening ? '1px solid oklch(60% 0.22 25 / 0.4)' : '1px solid transparent',
+                    }}
+                    aria-label={listening ? 'Stop listening' : 'Speak your question'}>
+                    <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                      <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd"/>
+                    </svg>
+                  </button>
+                )}
 
                 {/* Send */}
                 <button onClick={() => send(input)}
