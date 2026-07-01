@@ -20,10 +20,13 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false)
   const [listening, setListening] = useState(false)
   const [micSupported, setMicSupported] = useState(false)
+  const [voiceOn, setVoiceOn] = useState(false)
+  const [speaking, setSpeaking] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,6 +48,29 @@ export default function ChatWidget() {
     if (open) setTimeout(() => inputRef.current?.focus(), 300)
   }, [open])
 
+  const speak = useCallback(async (text: string) => {
+    audioRef.current?.pause()
+    audioRef.current = null
+    setSpeaking(true)
+    try {
+      const r = await fetch('/api/voice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      })
+      if (!r.ok) throw new Error('voice request failed')
+      const blob = await r.blob()
+      const url = URL.createObjectURL(blob)
+      const audio = new Audio(url)
+      audioRef.current = audio
+      audio.onended = () => setSpeaking(false)
+      audio.onerror = () => setSpeaking(false)
+      await audio.play()
+    } catch {
+      setSpeaking(false)
+    }
+  }, [])
+
   const send = useCallback(async (text: string) => {
     const trimmed = text.trim()
     if (!trimmed || loading) return
@@ -63,6 +89,7 @@ export default function ChatWidget() {
       })
       const { text: reply } = await r.json() as { text: string }
       setMessages(prev => [...prev, { role: 'assistant', content: reply }])
+      if (voiceOn) speak(reply)
     } catch {
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -71,7 +98,18 @@ export default function ChatWidget() {
     } finally {
       setLoading(false)
     }
-  }, [messages, loading])
+  }, [messages, loading, voiceOn, speak])
+
+  const toggleVoice = useCallback(() => {
+    setVoiceOn(v => {
+      if (v) {
+        audioRef.current?.pause()
+        audioRef.current = null
+        setSpeaking(false)
+      }
+      return !v
+    })
+  }, [])
 
   const toggleMic = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -168,7 +206,7 @@ export default function ChatWidget() {
                 }}>
                 S
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="text-sm font-sora font-semibold" style={{ color: 'oklch(92% 0.01 240)' }}>
                   Ask Suhas
                 </div>
@@ -176,6 +214,32 @@ export default function ChatWidget() {
                   AI Engineer · Full Stack Dev
                 </div>
               </div>
+
+              {/* Voice toggle — off by default; when on, replies are auto-spoken via LMNT */}
+              <button
+                onClick={toggleVoice}
+                role="switch"
+                aria-checked={voiceOn}
+                className="flex items-center gap-2 shrink-0"
+                aria-label={voiceOn ? 'Turn voice off' : 'Turn voice on'}
+                title={voiceOn ? 'Voice on — replies are spoken aloud' : 'Voice off'}>
+                <span className="text-[10px] font-sora font-medium select-none"
+                  style={{ color: voiceOn ? 'oklch(75% 0.18 185)' : 'oklch(55% 0.04 240)' }}>
+                  Voice
+                </span>
+                <span className="relative w-9 h-5 rounded-full transition-colors duration-200"
+                  style={{
+                    background: voiceOn ? 'oklch(75% 0.18 185)' : 'oklch(100% 0 0 / 0.15)',
+                    boxShadow: speaking ? '0 0 6px oklch(75% 0.18 185 / 0.7)' : 'none',
+                  }}>
+                  <motion.span
+                    className="absolute top-0.5 left-0.5 w-4 h-4 rounded-full"
+                    style={{ background: 'oklch(98% 0 0)', boxShadow: '0 1px 3px oklch(0% 0 0 / 0.4)' }}
+                    animate={{ x: voiceOn ? 16 : 0 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  />
+                </span>
+              </button>
             </div>
 
             {/* Messages */}
