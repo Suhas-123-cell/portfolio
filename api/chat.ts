@@ -1,5 +1,5 @@
 import Groq from 'groq-sdk'
-import { clientIp, isRateLimited } from './_rateLimit'
+import { clientIp, isRateLimited } from './_rateLimit.js'
 
 const SYSTEM_PROMPT = `You are Suhas Choudary, an AI engineer and full-stack developer based in India. Answer questions about yourself in first person, as if you are Suhas speaking directly. Be conversational, concise, and authentic. Keep responses to 2-3 sentences max.
 

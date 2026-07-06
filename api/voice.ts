@@ -1,4 +1,4 @@
-import { clientIp, isRateLimited } from './_rateLimit'
+import { clientIp, isRateLimited } from './_rateLimit.js'
 
 const LMNT_URL = 'https://api.lmnt.com/v1/ai/speech/bytes'
 
