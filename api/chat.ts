@@ -1,4 +1,5 @@
 import Groq from 'groq-sdk'
+import { clientIp, isRateLimited } from './_rateLimit'
 
 const SYSTEM_PROMPT = `You are Suhas Choudary, an AI engineer and full-stack developer based in India. Answer questions about yourself in first person, as if you are Suhas speaking directly. Be conversational, concise, and authentic. Keep responses to 2-3 sentences max.
 
@@ -30,25 +31,43 @@ If asked something you genuinely do not know, say so and suggest emailing suhasc
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
 export default async function handler(
-  req: { method: string; body: { message: string; history?: { role: string; content: string }[] } },
+  req: {
+    method: string
+    headers: Record<string, string | string[] | undefined>
+    body: { message: string; history?: { role: string; content: string }[] }
+  },
   res: { status: (n: number) => { end: () => void; json: (o: unknown) => void }; json: (o: unknown) => void }
 ) {
   if (req.method !== 'POST') return res.status(405).end()
 
+  if (isRateLimited(clientIp(req.headers))) {
+    return res.status(429).json({ error: 'Too many requests, slow down' })
+  }
+
   const { message, history = [] } = req.body
   if (!message?.trim()) return res.status(400).json({ error: 'No message' })
 
-  const completion = await groq.chat.completions.create({
-    model: 'llama-3.1-8b-instant',
-    messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
-      ...(history.slice(-6) as { role: 'user' | 'assistant'; content: string }[]),
-      { role: 'user', content: message },
-    ],
-    max_tokens: 120,
-    temperature: 0.7,
-  })
+  // Only user/assistant turns are trusted as conversation history — a client
+  // could otherwise smuggle a fake "system" role to override SYSTEM_PROMPT.
+  const cleanHistory = history
+    .filter((m): m is { role: 'user' | 'assistant'; content: string } => m.role === 'user' || m.role === 'assistant')
+    .slice(-6)
 
-  const text = completion.choices[0]?.message?.content ?? ''
-  res.json({ text })
+  try {
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.1-8b-instant',
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...cleanHistory,
+        { role: 'user', content: message.slice(0, 1000) },
+      ],
+      max_tokens: 120,
+      temperature: 0.7,
+    })
+
+    const text = completion.choices[0]?.message?.content ?? ''
+    res.json({ text })
+  } catch {
+    res.status(500).json({ error: 'Chat generation failed' })
+  }
 }

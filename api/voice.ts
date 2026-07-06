@@ -1,7 +1,9 @@
+import { clientIp, isRateLimited } from './_rateLimit'
+
 const LMNT_URL = 'https://api.lmnt.com/v1/ai/speech/bytes'
 
 export default async function handler(
-  req: { method: string; body: { text: string } },
+  req: { method: string; headers: Record<string, string | string[] | undefined>; body: { text: string } },
   res: {
     status: (n: number) => { end: () => void; json: (o: unknown) => void }
     setHeader: (k: string, v: string) => void
@@ -9,6 +11,10 @@ export default async function handler(
   }
 ) {
   if (req.method !== 'POST') return res.status(405).end()
+
+  if (isRateLimited(clientIp(req.headers))) {
+    return res.status(429).json({ error: 'Too many requests, slow down' })
+  }
 
   const { text } = req.body
   if (!text?.trim()) return res.status(400).json({ error: 'No text' })
