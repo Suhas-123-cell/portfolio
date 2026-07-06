@@ -67,7 +67,7 @@ export default function Contact() {
               transition={{ duration: 0.5, delay: 0.1 }}>
               <GlassPanel className="p-5 md:p-6 teal-box-glow">
                 <div className="text-[9px] font-sora uppercase tracking-[0.25em] mb-4"
-                  style={{ color: 'oklch(65% 0.04 240)' }}>Reach me at</div>
+                  style={{ color: 'oklch(65% 0.04 240)' }}>$ reach_me_at</div>
                 <div className="space-y-2">
                   {LINKS.map((link, i) => (
                     <motion.a key={link.label}
@@ -136,7 +136,7 @@ export default function Contact() {
               transition={{ duration: 0.5, delay: 0.3 }}>
               <GlassPanel size="sm" className="p-4">
                 <div className="text-[9px] font-sora uppercase tracking-[0.25em] mb-2"
-                  style={{ color: 'oklch(65% 0.04 240)' }}>What I build</div>
+                  style={{ color: 'oklch(65% 0.04 240)' }}>$ what_i_build</div>
                 <div className="flex flex-wrap gap-1.5">
                   {['AI Agents', 'RAG Systems', 'Computer Vision', 'FastAPI', 'React Native', 'LLM Pipelines'].map(tag => (
                     <span key={tag} className="text-[9px] font-sora px-2 py-0.5 rounded-full"

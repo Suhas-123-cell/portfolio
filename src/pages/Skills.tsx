@@ -54,7 +54,7 @@ export default function Skills() {
                           </span>
                         </div>
                         <div className="relative h-3 rounded-full overflow-hidden"
-                          style={{ background: 'oklch(100% 0 0 / 0.14)' }}
+                          style={{ background: 'oklch(18% 0.01 240)', border: '1px solid oklch(100% 0 0 / 0.08)' }}
                           role="meter" aria-valuenow={skill.level} aria-valuemin={0} aria-valuemax={100}
                           aria-label={skill.name} aria-valuetext={`Level ${skill.level} out of 100`}>
                           <motion.div
