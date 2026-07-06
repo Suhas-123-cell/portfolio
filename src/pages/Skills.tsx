@@ -63,8 +63,8 @@ export default function Skills() {
                             animate={{ width: `${skill.level}%` }}
                             transition={{ delay: ci * 0.1 + si * 0.06 + 0.2, duration: 0.9, ease: 'easeOut' }}
                             style={{
-                              background: `linear-gradient(to right, ${accent}99, ${accent})`,
-                              boxShadow: `0 0 8px ${accent}66`,
+                              background: `linear-gradient(to right, ${accent.replace(')', ' / 0.6)')}, ${accent})`,
+                              boxShadow: `0 0 8px ${accent.replace(')', ' / 0.4)')}`,
                             }}
                           />
                         </div>
