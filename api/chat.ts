@@ -29,6 +29,7 @@ Projects:
 If asked something you genuinely do not know, say so and suggest emailing suhaschowdary25@gmail.com.`
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
+const GROQ_MODEL = process.env.GROQ_MODEL || 'openai/gpt-oss-20b'
 
 export default async function handler(
   req: {
@@ -55,7 +56,7 @@ export default async function handler(
 
   try {
     const completion = await groq.chat.completions.create({
-      model: 'llama-3.1-8b-instant',
+      model: GROQ_MODEL,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         ...cleanHistory,

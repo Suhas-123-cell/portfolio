@@ -19,6 +19,21 @@ All real content lives in one place:
 | `content/projects.ts` | Project titles, descriptions, tags, repo/demo URLs |
 | `content/skills.ts` | Skill names, levels (0–100), categories |
 
+## AI chat + voice
+
+The site ships with a chat widget (`src/components/ChatWidget.tsx`) that answers questions about me. It has two serverless backends, both configured entirely through env vars — no model names or keys are hardcoded in source:
+
+| Env var | Used by | Purpose |
+|---|---|---|
+| `GROQ_API_KEY` | `api/chat.ts` | Groq API key for chat completions |
+| `GROQ_MODEL` | `api/chat.ts` | Groq model ID to run the chat on. Defaults to `openai/gpt-oss-20b` if unset — fast (~1000 tok/s), cheap, and free-tier friendly. Swap in `openai/gpt-oss-120b` for stronger answers at ~half the speed. Full list: [console.groq.com/docs/models](https://console.groq.com/docs/models) |
+| `LMNT_API_KEY` | `api/voice.ts` | LMNT API key for text-to-speech |
+| `LMNT_VOICE_ID` | `api/voice.ts` | Which LMNT voice to speak replies with — pick one at [app.lmnt.com/voice-library](https://app.lmnt.com/voice-library) |
+
+Voice input (mic) uses the browser's built-in Web Speech API — no key needed, and it's unsupported on iOS Safari (the mic button just doesn't render there).
+
+Copy `.env.example` to `.env` and fill these in to run the chat/voice features locally.
+
 ## Toggle CRT effects
 
 - Click **CRT:ON/OFF** button (top-right corner) — persists to localStorage
