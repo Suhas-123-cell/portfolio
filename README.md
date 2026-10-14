@@ -1,80 +1,44 @@
-# suhas.exe — retro portfolio
+# Suhas Choudary — Spider-Verse portfolio
 
-Personal portfolio built as a CRT terminal / retro arcade OS.
+Personal portfolio with a fan-made Spider-Man / Spider-Verse comic theme: a Three.js night skyline with a pluckable web, click-anywhere web-shooting, comic-cover project "issues", and five suits (themes).
 
 ## Run locally
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000
+npm run dev          # http://localhost:5173
+npm run build        # type-check + production build into dist/
+npm run sync:github  # refresh content/github.json from the GitHub API (set GITHUB_TOKEN to avoid rate limits)
 ```
 
 ## Edit your content
 
-All real content lives in one place:
-
 | File | What to edit |
 |---|---|
-| `content/about.ts` | Bio, stat block (level, origin, weapon, ability), links |
-| `content/projects.ts` | Project titles, descriptions, tags, repo/demo URLs |
-| `content/skills.ts` | Skill names, levels (0–100), categories |
+| `content/projects.ts` | Projects: title, description, highlights, cover SFX + blurb, stat, links |
+| `content/about.ts` | Bio, origin story captions, experience, photo, résumé path |
+| `content/skills.ts` | Skill groups shown on the web of skills |
+| `public/Suhas_Choudary_Resume.pdf` | The résumé linked from the header, hero and footer |
+| `public/images/suhas.jpg` | Photo on the About page press pass |
 
-## AI chat + voice
+The home page's "Spun on GitHub" section starts from `content/github.json` and refreshes live from the GitHub API in the browser when it can.
 
-The site ships with a chat widget (`src/components/ChatWidget.tsx`) that answers questions about me. It has two serverless backends, both configured entirely through env vars — no model names or keys are hardcoded in source:
+## Things to find
+
+- **Intro:** a title sequence in the style of the 2012 cartoon opening, with my name as the title. Plays once per session on the home page; replay it from the footer. Skipped under reduced motion.
+- **Suits:** Classic, Miles, Gwen (light theme), 2099. Up, up, down, down, left, right, left, right, B, A unlocks Noir.
+- **Web-shooter:** click any empty spot. The hero web can be brushed and plucked.
+- **Spider:** rides its dragline down the right edge as you scroll; click it to go back to the top.
+
+## AI chat
+
+The chat widget (`src/components/ChatWidget.tsx`) answers questions about me. Its backends are Vercel functions configured through env vars (copy `.env.example` to `.env`):
 
 | Env var | Used by | Purpose |
 |---|---|---|
-| `GROQ_API_KEY` | `api/chat.ts` | Groq API key for chat completions |
-| `GROQ_MODEL` | `api/chat.ts` | Groq model ID to run the chat on. Defaults to `openai/gpt-oss-20b` if unset — fast (~1000 tok/s), cheap, and free-tier friendly. Swap in `openai/gpt-oss-120b` for stronger answers at ~half the speed. Full list: [console.groq.com/docs/models](https://console.groq.com/docs/models) |
-| `LMNT_API_KEY` | `api/voice.ts` | LMNT API key for text-to-speech |
-| `LMNT_VOICE_ID` | `api/voice.ts` | Which LMNT voice to speak replies with — pick one at [app.lmnt.com/voice-library](https://app.lmnt.com/voice-library) |
+| `GROQ_API_KEY` | `api/chat.ts` | Groq API key |
+| `GROQ_MODEL` | `api/chat.ts` | Model ID, defaults to `openai/gpt-oss-20b` |
 
-Voice input (mic) uses the browser's built-in Web Speech API — no key needed, and it's unsupported on iOS Safari (the mic button just doesn't render there).
+## Credits
 
-Copy `.env.example` to `.env` and fill these in to run the chat/voice features locally.
-
-## Toggle CRT effects
-
-- Click **CRT:ON/OFF** button (top-right corner) — persists to localStorage
-- Set `prefers-reduced-motion` in your OS to auto-disable flicker/curvature
-- CSS intensity knobs live in `app/globals.css` under `:root`
-
-## Dial down the effects
-
-In `app/globals.css`:
-```css
-:root {
-  --crt-scanline-opacity:   0.25;  /* reduce to taste */
-  --crt-flicker-intensity:  0.04;  /* set to 0 to kill flicker */
-  --crt-aberration-offset:  1.5px; /* chromatic aberration on headings */
-  --crt-curvature:          12px;  /* screen corner rounding */
-}
-```
-
-## Palette
-
-**Phosphor Amber** — inspired by the IBM 5151 amber monochrome monitor (1984).
-
-- Background: `oklch(5% 0.007 55)` — near-black with warm amber tint
-- Amber mid: `oklch(55% 0.155 65)` — body/dim UI
-- Amber bright: `oklch(78% 0.17 72)` — primary text
-- Amber glow: `oklch(90% 0.12 80)` — headings
-- Cyan: `oklch(68% 0.15 198)` — accents, [OK] markers, links
-
-## Fonts
-
-- **Press Start 2P** — headings, labels, tags
-- **VT323** — body text, terminal output (loaded via `next/font/google`)
-
-## Routes
-
-| Path | What it is |
-|---|---|
-| `/` | Boot screen — typewriter log, then "PRESS ANY KEY" |
-| `/menu` | Game hub — arrow key + mouse navigation |
-| `/about` | Character profile — bio + stat block |
-| `/projects` | Project cartridge grid |
-| `/projects/[slug]` | Project detail — description, stack, links |
-| `/skills` | RPG stat bars by category |
-| `/contact` | Fake terminal — type `email`, `github`, `back`, `clear` |
+Fan-made Spider-Man theme. Not affiliated with Marvel or Sony. The spider emblem in the intro (`public/images/spider-emblem.png`) is a supplied image; all other artwork is original.
