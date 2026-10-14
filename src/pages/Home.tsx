@@ -24,6 +24,12 @@ const caption: Variants = {
   show: (i: number) => ({ opacity: 1, scale: 1, rotate: i % 2 ? 1 : -1.5, transition: { delay: 0.3 + i * 0.2, type: 'spring', stiffness: 520, damping: 22 } }),
 }
 
+// ...the portrait panel slaps onto the page just after the name...
+const portrait: Variants = {
+  hidden: { opacity: 0, scale: 1.15, rotate: 6 },
+  show: { opacity: 1, scale: 1, rotate: 2.5, transition: { delay: 0.45, type: 'spring', stiffness: 380, damping: 20 } },
+}
+
 // ...and the supporting copy rises last.
 const rise: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -49,7 +55,9 @@ function Hero() {
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,var(--ink)_0%,color-mix(in_oklch,var(--ink)_70%,transparent)_38%,transparent_70%)] [mask-image:linear-gradient(to_bottom,transparent_0%,transparent_22%,black_52%)]"
       />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 pb-28 pt-28 md:px-8 md:pb-24">
+      <div className="relative mx-auto w-full max-w-7xl px-4 pb-28 pt-28 md:px-8 md:pb-24 lg:grid lg:grid-cols-[1fr_auto] lg:items-end lg:gap-12">
+        <div>
+        <div className="flex items-start justify-between gap-4">
         <div className="flex flex-col items-start gap-2">
           <motion.p variants={caption} initial="hidden" animate={state} custom={0} className="caption-box !text-[0.8rem] md:!text-sm">
             Alright, let's do this one last time.
@@ -57,6 +65,16 @@ function Hero() {
           <motion.p variants={caption} initial="hidden" animate={state} custom={1} className="caption-box ml-6 !text-[0.8rem] md:!text-sm">
             My name is
           </motion.p>
+        </div>
+          {/* phones: a small framed photo beside the captions */}
+          <motion.img
+            variants={portrait}
+            initial="hidden"
+            animate={state}
+            src={about.photo}
+            alt={`Photo of ${about.name}`}
+            className="h-24 w-20 shrink-0 border-2 border-line object-cover object-top shadow-[4px_4px_0_var(--hero)] lg:hidden"
+          />
         </div>
         <motion.h1
           variants={slam}
@@ -85,6 +103,16 @@ function Hero() {
             <FileText size={18} aria-hidden /> Résumé
           </a>
         </motion.div>
+        </div>
+
+        {/* desktop: a comic portrait panel beside the name */}
+        <motion.figure variants={portrait} initial="hidden" animate={state} className="panel relative hidden w-[min(300px,24vw)] overflow-hidden lg:block">
+          <div className="relative aspect-[4/5]">
+            <img src={about.photo} alt={`Photo of ${about.name}`} className="absolute inset-0 h-full w-full object-cover object-top" />
+            <div aria-hidden className="absolute inset-0 text-ink/25 [background-image:radial-gradient(currentColor_28%,transparent_31%)] [background-size:7px_7px] [mask-image:linear-gradient(200deg,transparent_60%,black_100%)]" />
+          </div>
+          <figcaption className="caption-box absolute -left-1 bottom-3 -rotate-2">Your friendly neighborhood dev</figcaption>
+        </motion.figure>
       </div>
 
       <p aria-hidden className="font-sfx absolute bottom-8 right-28 hidden rotate-[-4deg] text-xl text-paper lg:block">
