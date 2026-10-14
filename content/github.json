@@ -1,0 +1,273 @@
+{
+  "syncedAt": "2026-10-13T18:10:13.950Z",
+  "user": {
+    "login": "Suhas-123-cell",
+    "avatar": "https://avatars.githubusercontent.com/u/179806462?v=4",
+    "publicRepos": 29,
+    "followers": 7,
+    "joined": "2024-08-29T07:55:50Z"
+  },
+  "languages": [
+    {
+      "name": "Python",
+      "repos": 17
+    },
+    {
+      "name": "TypeScript",
+      "repos": 4
+    },
+    {
+      "name": "JavaScript",
+      "repos": 4
+    },
+    {
+      "name": "HTML",
+      "repos": 2
+    }
+  ],
+  "repos": [
+    {
+      "name": "IntentShield",
+      "url": "https://github.com/Suhas-123-cell/IntentShield",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-10-13T18:01:15Z",
+      "homepage": null
+    },
+    {
+      "name": "AutoReply",
+      "url": "https://github.com/Suhas-123-cell/AutoReply",
+      "description": null,
+      "language": "TypeScript",
+      "stars": 0,
+      "pushedAt": "2026-10-10T18:29:24Z",
+      "homepage": null
+    },
+    {
+      "name": "FabGuard-AI",
+      "url": "https://github.com/Suhas-123-cell/FabGuard-AI",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-10-05T04:08:18Z",
+      "homepage": null
+    },
+    {
+      "name": "portfolio",
+      "url": "https://github.com/Suhas-123-cell/portfolio",
+      "description": null,
+      "language": "TypeScript",
+      "stars": 0,
+      "pushedAt": "2026-08-20T17:02:31Z",
+      "homepage": "https://portfolio-eight-green-l7jbjfvx8g.vercel.app"
+    },
+    {
+      "name": "streak",
+      "url": "https://github.com/Suhas-123-cell/streak",
+      "description": null,
+      "language": "JavaScript",
+      "stars": 0,
+      "pushedAt": "2026-07-29T16:07:02Z",
+      "homepage": null
+    },
+    {
+      "name": "task-ai",
+      "url": "https://github.com/Suhas-123-cell/task-ai",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-07-23T18:45:56Z",
+      "homepage": null
+    },
+    {
+      "name": "Terminal-control",
+      "url": "https://github.com/Suhas-123-cell/Terminal-control",
+      "description": null,
+      "language": "TypeScript",
+      "stars": 0,
+      "pushedAt": "2026-07-16T07:57:23Z",
+      "homepage": null
+    },
+    {
+      "name": "Venture-Radar",
+      "url": "https://github.com/Suhas-123-cell/Venture-Radar",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-07-11T08:52:18Z",
+      "homepage": null
+    },
+    {
+      "name": "ai-auction-room",
+      "url": "https://github.com/Suhas-123-cell/ai-auction-room",
+      "description": null,
+      "language": "JavaScript",
+      "stars": 0,
+      "pushedAt": "2026-07-10T12:36:07Z",
+      "homepage": null
+    },
+    {
+      "name": "sql-generation",
+      "url": "https://github.com/Suhas-123-cell/sql-generation",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-07-03T11:05:00Z",
+      "homepage": null
+    },
+    {
+      "name": "Hallu-Check",
+      "url": "https://github.com/Suhas-123-cell/Hallu-Check",
+      "description": "Hallucination Prevention",
+      "language": "Python",
+      "stars": 1,
+      "pushedAt": "2026-07-01T06:43:17Z",
+      "homepage": null
+    },
+    {
+      "name": "school-erp",
+      "url": "https://github.com/Suhas-123-cell/school-erp",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-07-01T03:29:23Z",
+      "homepage": null
+    },
+    {
+      "name": "rag-task",
+      "url": "https://github.com/Suhas-123-cell/rag-task",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-06-27T12:37:06Z",
+      "homepage": null
+    },
+    {
+      "name": "intern-task",
+      "url": "https://github.com/Suhas-123-cell/intern-task",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-06-24T12:14:09Z",
+      "homepage": null
+    },
+    {
+      "name": "primetrade",
+      "url": "https://github.com/Suhas-123-cell/primetrade",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-06-09T10:27:18Z",
+      "homepage": null
+    },
+    {
+      "name": "purplle",
+      "url": "https://github.com/Suhas-123-cell/purplle",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-06-04T15:49:33Z",
+      "homepage": null
+    },
+    {
+      "name": "RAG-hotel",
+      "url": "https://github.com/Suhas-123-cell/RAG-hotel",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-05-31T17:21:58Z",
+      "homepage": null
+    },
+    {
+      "name": "customer-support",
+      "url": "https://github.com/Suhas-123-cell/customer-support",
+      "description": null,
+      "language": "JavaScript",
+      "stars": 0,
+      "pushedAt": "2026-05-28T14:46:19Z",
+      "homepage": null
+    },
+    {
+      "name": "totp-strict",
+      "url": "https://github.com/Suhas-123-cell/totp-strict",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-05-25T05:06:23Z",
+      "homepage": null
+    },
+    {
+      "name": "lang-benchmark",
+      "url": "https://github.com/Suhas-123-cell/lang-benchmark",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-05-21T18:10:18Z",
+      "homepage": null
+    },
+    {
+      "name": "anigo",
+      "url": "https://github.com/Suhas-123-cell/anigo",
+      "description": null,
+      "language": "TypeScript",
+      "stars": 0,
+      "pushedAt": "2026-05-19T07:09:53Z",
+      "homepage": null
+    },
+    {
+      "name": "lendqa-ui-tests",
+      "url": "https://github.com/Suhas-123-cell/lendqa-ui-tests",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-05-15T18:54:12Z",
+      "homepage": null
+    },
+    {
+      "name": "lendqa-api-tests",
+      "url": "https://github.com/Suhas-123-cell/lendqa-api-tests",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-05-15T18:47:11Z",
+      "homepage": null
+    },
+    {
+      "name": "Multi-lingual-document-intelligence-",
+      "url": "https://github.com/Suhas-123-cell/Multi-lingual-document-intelligence-",
+      "description": null,
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-05-03T18:43:41Z",
+      "homepage": null
+    },
+    {
+      "name": "Business-Orchestration-System",
+      "url": "https://github.com/Suhas-123-cell/Business-Orchestration-System",
+      "description": null,
+      "language": "HTML",
+      "stars": 0,
+      "pushedAt": "2026-04-25T10:06:19Z",
+      "homepage": null
+    },
+    {
+      "name": "web-rendering-chatbot",
+      "url": "https://github.com/Suhas-123-cell/web-rendering-chatbot",
+      "description": null,
+      "language": "JavaScript",
+      "stars": 0,
+      "pushedAt": "2026-02-19T09:35:24Z",
+      "homepage": null
+    },
+    {
+      "name": "25th-ani",
+      "url": "https://github.com/Suhas-123-cell/25th-ani",
+      "description": null,
+      "language": "HTML",
+      "stars": 0,
+      "pushedAt": "2025-04-16T12:37:29Z",
+      "homepage": null
+    }
+  ]
+}
