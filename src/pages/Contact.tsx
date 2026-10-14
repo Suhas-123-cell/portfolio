@@ -1,158 +1,69 @@
-import { motion } from 'motion/react'
-import GlassPanel from '../components/GlassPanel'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { Check, Copy, Github, Mail } from 'lucide-react'
 import PageTransition from '../components/PageTransition'
+import WebMark from '../components/WebMark'
 import { about } from '../../content/about'
 
-const LINKS = [
-  {
-    label: 'Email',
-    value: about.links.email,
-    href: `mailto:${about.links.email}`,
-    icon: (
-      <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5" aria-hidden="true">
-        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-      </svg>
-    ),
-  },
-  {
-    label: 'GitHub',
-    value: 'Suhas-123-cell',
-    href: about.links.github,
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true">
-        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-      </svg>
-    ),
-  },
-  {
-    label: 'LinkedIn',
-    value: 'suhas-choudhary',
-    href: 'https://www.linkedin.com/in/suhas-choudhary/',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true">
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-      </svg>
-    ),
-  },
-]
-
-const SEEKING = [
-  { label: 'Role',      value: 'AI / ML Engineer · Fullstack Dev' },
-  { label: 'Location',  value: 'India (IST) · Open to Remote'     },
-  { label: 'Available', value: 'Immediately'                       },
-  { label: 'Response',  value: '< 24 hours'                        },
-]
-
 export default function Contact() {
+  const [copied, setCopied] = useState(false)
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(about.links.email)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1800)
+    } catch {
+      window.location.href = `mailto:${about.links.email}`
+    }
+  }
+
   return (
-    <PageTransition>
-      <main id="main" className="min-h-dvh px-4 md:pl-28 md:pr-8 py-8 md:py-12 pb-24 md:pb-12">
+    <PageTransition title="Contact | Suhas Choudary">
+      <section className="relative mx-auto max-w-7xl overflow-hidden px-4 pt-32 md:px-8 md:pt-40">
+        <WebMark className="pointer-events-none absolute -right-40 top-10 h-[42rem] w-[42rem] text-paper/[0.06]" strokeWidth={0.7} />
 
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }} className="mb-8">
-          <div className="text-[10px] font-sora tracking-[0.3em] uppercase mb-1"
-            style={{ color: 'oklch(75% 0.18 185)' }}>◈ Terminal</div>
-          <h1 className="font-bebas text-4xl md:text-5xl" style={{ color: 'oklch(95% 0.01 240)' }}>Contact</h1>
-          <p className="mt-1 text-sm font-sora" style={{ color: 'oklch(65% 0.04 240)' }}>
-            Open to AI / fullstack roles and interesting problems.
-          </p>
-        </motion.div>
+        <h1 className="font-display misprint relative text-7xl md:text-[9rem]">
+          Drop me
+          <br />a line
+        </h1>
+        <p className="relative mt-6 max-w-[44ch] text-xl leading-relaxed text-paper/90">
+          Internships, collaborations, or a bug you found in one of my repos. My inbox is open.
+        </p>
 
-        <div className="flex flex-col xl:flex-row gap-5 max-w-4xl">
-
-          {/* Left — contact links */}
-          <div className="flex-1 max-w-lg space-y-4">
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}>
-              <GlassPanel className="p-5 md:p-6 teal-box-glow">
-                <div className="text-[9px] font-sora uppercase tracking-[0.25em] mb-4"
-                  style={{ color: 'oklch(65% 0.04 240)' }}>$ reach_me_at</div>
-                <div className="space-y-2">
-                  {LINKS.map((link, i) => (
-                    <motion.a key={link.label}
-                      href={link.href}
-                      target={link.href.startsWith('mailto') ? undefined : '_blank'}
-                      rel={link.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                      initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 + i * 0.08 }}
-                      className="flex items-center gap-4 p-3 rounded-xl transition-colors
-                                 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                                 hover:bg-white/5 group"
-                      style={{ outlineColor: 'oklch(75% 0.18 185)' }}>
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center glass-sm shrink-0"
-                        style={{ color: 'oklch(75% 0.18 185)' }}>
-                        {link.icon}
-                      </div>
-                      <div>
-                        <div className="text-[9px] font-sora uppercase tracking-wider"
-                          style={{ color: 'oklch(65% 0.04 240)' }}>{link.label}</div>
-                        <div className="text-sm font-sora font-semibold transition-colors"
-                          style={{ color: 'oklch(85% 0.20 185)' }}>{link.value}</div>
-                      </div>
-                      <span className="ml-auto text-sm" style={{ color: 'oklch(65% 0.04 240)' }}>↗</span>
-                    </motion.a>
-                  ))}
-                </div>
-              </GlassPanel>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}>
-              <GlassPanel size="sm" className="p-4">
-                <p className="text-xs font-sora leading-relaxed" style={{ color: 'oklch(65% 0.04 240)' }}>
-                  Best way to reach me is email — I reply within 24 hours.
-                  For code questions, GitHub DMs are open too.
-                </p>
-              </GlassPanel>
-            </motion.div>
+        <div className="relative mt-12 flex flex-col items-start gap-6">
+          <div className="flex flex-wrap items-center gap-5">
+            <a href={`mailto:${about.links.email}`} className="btn btn-hero sense text-lg md:text-2xl">
+              <Mail size={22} aria-hidden /> {about.links.email}
+            </a>
+            <button type="button" onClick={copy} className="btn btn-ghost" aria-live="polite">
+              {copied ? <Check size={18} aria-hidden /> : <Copy size={18} aria-hidden />}
+              {copied ? 'Copied' : 'Copy'}
+            </button>
+            <AnimatePresence>
+              {copied && (
+                <motion.span
+                  aria-hidden
+                  initial={{ scale: 0.4, opacity: 0, rotate: -12 }}
+                  animate={{ scale: 1, opacity: 1, rotate: -6 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 600, damping: 14 }}
+                  className="sfx text-4xl"
+                >
+                  THWIP!
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
-
-          {/* Right — what I'm looking for */}
-          <div className="xl:w-72 space-y-4">
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}>
-              <GlassPanel className="p-5">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="w-2 h-2 rounded-full pulse-glow shrink-0"
-                    style={{ background: 'oklch(83% 0.22 155)' }} />
-                  <span className="text-[10px] font-sora uppercase tracking-wider"
-                    style={{ color: 'oklch(83% 0.22 155)' }}>Currently Seeking</span>
-                </div>
-                <div className="space-y-3">
-                  {SEEKING.map((s) => (
-                    <div key={s.label} className="flex flex-col gap-0.5">
-                      <span className="text-[9px] font-sora uppercase tracking-wider"
-                        style={{ color: 'oklch(60% 0.04 240)' }}>{s.label}</span>
-                      <span className="text-sm font-sora font-semibold"
-                        style={{ color: 'oklch(90% 0.01 240)' }}>{s.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </GlassPanel>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}>
-              <GlassPanel size="sm" className="p-4">
-                <div className="text-[9px] font-sora uppercase tracking-[0.25em] mb-2"
-                  style={{ color: 'oklch(65% 0.04 240)' }}>$ what_i_build</div>
-                <div className="flex flex-wrap gap-1.5">
-                  {['AI Agents', 'RAG Systems', 'Computer Vision', 'FastAPI', 'React Native', 'LLM Pipelines'].map(tag => (
-                    <span key={tag} className="text-[9px] font-sora px-2 py-0.5 rounded-full"
-                      style={{
-                        background: 'oklch(75% 0.18 185 / 0.08)',
-                        color: 'oklch(75% 0.18 185)',
-                        border: '1px solid oklch(75% 0.18 185 / 0.2)',
-                      }}>{tag}</span>
-                  ))}
-                </div>
-              </GlassPanel>
-            </motion.div>
-          </div>
-
+          <a href={about.links.github} target="_blank" rel="noreferrer" className="btn btn-ghost">
+            <Github size={18} aria-hidden /> github.com/{about.links.github.split('/').pop()}
+          </a>
         </div>
-      </main>
+
+        <p className="relative mt-16 max-w-[52ch] text-paper-dim">
+          Prefer to ask first? The chat bubble in the corner answers questions about my projects.
+        </p>
+      </section>
     </PageTransition>
   )
 }

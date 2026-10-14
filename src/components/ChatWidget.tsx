@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { MessageCircle, Send, X } from 'lucide-react'
+import WebMark from './WebMark'
 
 type Message = {
   role: 'user' | 'assistant'
@@ -10,7 +12,7 @@ const SUGGESTIONS = [
   "What have you built?",
   "What's your stack?",
   "Are you open to work?",
-  "Tell me about StreakFight",
+  "Tell me about IntentShield",
 ]
 
 export default function ChatWidget() {
@@ -18,21 +20,9 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [listening, setListening] = useState(false)
-  const [micSupported, setMicSupported] = useState(false)
-  const [voiceOn, setVoiceOn] = useState(false)
-  const [speaking, setSpeaking] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const recognitionRef = useRef<any>(null)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const w = window as any
-    setMicSupported(!!(w.SpeechRecognition || w.webkitSpeechRecognition))
-  }, [])
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -46,36 +36,23 @@ export default function ChatWidget() {
       }])
     }
     if (open) setTimeout(() => inputRef.current?.focus(), 300)
-  }, [open])
-
-  const speak = useCallback(async (text: string) => {
-    audioRef.current?.pause()
-    audioRef.current = null
-    setSpeaking(true)
-    try {
-      const r = await fetch('/api/voice', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
-      })
-      if (!r.ok) throw new Error('voice request failed')
-      const blob = await r.blob()
-      const url = URL.createObjectURL(blob)
-      const audio = new Audio(url)
-      audioRef.current = audio
-      audio.onended = () => setSpeaking(false)
-      audio.onerror = () => setSpeaking(false)
-      await audio.play()
-    } catch {
-      setSpeaking(false)
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setOpen(false)
+      triggerRef.current?.focus()
     }
-  }, [])
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
 
   const send = useCallback(async (text: string) => {
     const trimmed = text.trim()
     if (!trimmed || loading) return
 
-    const history = messages.map(m => ({ role: m.role, content: m.content }))
+    const history = messages
+      .filter(m => typeof m.content === 'string' && m.content.length > 0)
+      .map(m => ({ role: m.role, content: m.content }))
 
     setMessages(prev => [...prev, { role: 'user', content: trimmed }])
     setInput('')
@@ -87,94 +64,50 @@ export default function ChatWidget() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: trimmed, history }),
       })
-      const { text: reply } = await r.json() as { text: string }
+      if (r.status === 429) throw new Error('rate')
+      if (!r.ok) throw new Error('chat')
+      const data = await r.json() as { text?: unknown }
+      const reply = typeof data.text === 'string' && data.text.trim() ? data.text : null
+      if (!reply) throw new Error('empty')
       setMessages(prev => [...prev, { role: 'assistant', content: reply }])
-      if (voiceOn) speak(reply)
-    } catch {
+    } catch (err) {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: "Sorry, something went wrong. Reach me at suhaschowdary25@gmail.com.",
+        content: err instanceof Error && err.message === 'rate'
+          ? "Whoa, my spider-sense says slow down. Give it a minute and ask again."
+          : "Sorry, something went wrong. Reach me at suhaschowdary25@gmail.com.",
       }])
     } finally {
       setLoading(false)
+      inputRef.current?.focus()
     }
-  }, [messages, loading, voiceOn, speak])
-
-  const toggleVoice = useCallback(() => {
-    setVoiceOn(v => {
-      if (v) {
-        audioRef.current?.pause()
-        audioRef.current = null
-        setSpeaking(false)
-      }
-      return !v
-    })
-  }, [])
-
-  const toggleMic = useCallback(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const w = window as any
-    const SR = w.SpeechRecognition || w.webkitSpeechRecognition
-    if (!SR) return
-
-    if (listening) {
-      recognitionRef.current?.stop()
-      setListening(false)
-      return
-    }
-
-    const rec = new SR()
-    rec.lang = 'en-US'
-    rec.interimResults = false
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    rec.onresult = (e: any) => {
-      const transcript = e.results[0][0].transcript
-      send(transcript)
-    }
-    rec.onend = () => setListening(false)
-    rec.onerror = () => setListening(false)
-    recognitionRef.current = rec
-    rec.start()
-    setListening(true)
-  }, [listening, send])
+  }, [messages, loading])
 
   return (
     <>
       {/* Floating trigger button */}
       <motion.button
+        ref={triggerRef}
         onClick={() => setOpen(o => !o)}
-        className="fixed bottom-28 right-4 md:bottom-6 md:right-6 z-50 w-12 h-12 rounded-full
-                   flex items-center justify-center shadow-lg
-                   focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        style={{
-          background: open ? 'oklch(22% 0.04 240)' : 'oklch(75% 0.18 185)',
-          color: open ? 'oklch(75% 0.18 185)' : 'oklch(8% 0.025 240)',
-          outlineColor: 'oklch(75% 0.18 185)',
-          boxShadow: '0 0 24px oklch(75% 0.18 185 / 0.35)',
-          border: open ? '1px solid oklch(75% 0.18 185 / 0.3)' : 'none',
-        }}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.94 }}
+        className={`fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center border-2 border-line md:bottom-6 md:right-6 ${
+          open ? 'bg-ink-2 text-paper' : 'bg-hero text-hero-ink'
+        }`}
+        style={{ boxShadow: '4px 4px 0 var(--web)' }}
+        whileHover={{ x: -2, y: -2 }}
+        whileTap={{ x: 2, y: 2 }}
         aria-label={open ? 'Close chat' : 'Ask Suhas'}
+        aria-expanded={open}
       >
         <AnimatePresence mode="wait" initial={false}>
-          {open ? (
-            <motion.span key="close"
-              initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-              <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
-              </svg>
-            </motion.span>
-          ) : (
-            <motion.span key="chat"
-              initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-              <svg viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd"/>
-              </svg>
-            </motion.span>
-          )}
+          <motion.span
+            key={open ? 'close' : 'chat'}
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            {open ? <X size={22} aria-hidden /> : <MessageCircle size={22} aria-hidden />}
+          </motion.span>
         </AnimatePresence>
       </motion.button>
 
@@ -182,81 +115,34 @@ export default function ChatWidget() {
       <AnimatePresence>
         {open && (
           <motion.div
+            role="dialog"
+            aria-label="Chat with Suhas"
             initial={{ opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.96 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            className="fixed bottom-44 right-4 md:bottom-24 md:right-6 z-50 w-80 md:w-96
-                       rounded-2xl overflow-hidden flex flex-col"
-            style={{
-              background: 'oklch(10% 0.025 240 / 0.97)',
-              border: '1px solid oklch(75% 0.18 185 / 0.18)',
-              backdropFilter: 'blur(24px)',
-              boxShadow: '0 24px 64px oklch(0% 0 0 / 0.65), 0 0 0 1px oklch(75% 0.18 185 / 0.08)',
-              maxHeight: '440px',
-            }}
+            className="panel fixed bottom-24 right-4 z-50 flex max-h-[min(460px,70dvh)] w-[calc(100vw-2rem)] origin-bottom-right flex-col overflow-hidden sm:w-96 md:bottom-24 md:right-6"
           >
             {/* Header */}
-            <div className="flex items-center gap-3 px-4 py-3 shrink-0"
-              style={{ borderBottom: '1px solid oklch(100% 0 0 / 0.07)' }}>
-              <div className="w-8 h-8 rounded-full flex items-center justify-center font-bebas text-sm shrink-0"
-                style={{
-                  background: 'linear-gradient(135deg, oklch(75% 0.18 185), oklch(55% 0.14 185))',
-                  color: 'oklch(8% 0.025 240)',
-                }}>
-                S
+            <div className="flex shrink-0 items-center gap-3 border-b-2 border-line bg-hero px-4 py-3 text-hero-ink">
+              <WebMark className="h-8 w-8 shrink-0" />
+              <div className="min-w-0 flex-1">
+                <div className="font-display text-xl leading-none">Ask Suhas</div>
+                <div className="mt-1 text-[11px] font-semibold opacity-85">AI engineer, full stack dev</div>
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-sora font-semibold" style={{ color: 'oklch(92% 0.01 240)' }}>
-                  Ask Suhas
-                </div>
-                <div className="text-[10px] font-sora" style={{ color: 'oklch(55% 0.04 240)' }}>
-                  AI Engineer · Full Stack Dev
-                </div>
-              </div>
-
-              {/* Voice toggle — off by default; when on, replies are auto-spoken via LMNT */}
-              <button
-                onClick={toggleVoice}
-                role="switch"
-                aria-checked={voiceOn}
-                className="flex items-center gap-2 shrink-0"
-                aria-label={voiceOn ? 'Turn voice off' : 'Turn voice on'}
-                title={voiceOn ? 'Voice on — replies are spoken aloud' : 'Voice off'}>
-                <span className="text-[10px] font-sora font-medium select-none"
-                  style={{ color: voiceOn ? 'oklch(75% 0.18 185)' : 'oklch(55% 0.04 240)' }}>
-                  Voice
-                </span>
-                <span className="relative w-9 h-5 rounded-full transition-colors duration-200"
-                  style={{
-                    background: voiceOn ? 'oklch(75% 0.18 185)' : 'oklch(100% 0 0 / 0.15)',
-                    boxShadow: speaking ? '0 0 6px oklch(75% 0.18 185 / 0.7)' : 'none',
-                  }}>
-                  <motion.span
-                    className="absolute top-0.5 left-0.5 w-4 h-4 rounded-full"
-                    style={{ background: 'oklch(98% 0 0)', boxShadow: '0 1px 3px oklch(0% 0 0 / 0.4)' }}
-                    animate={{ x: voiceOn ? 16 : 0 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                  />
-                </span>
-              </button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" style={{ minHeight: 0 }}>
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
               {messages.map((m, i) => (
                 <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className="max-w-[85%] text-sm font-sora leading-relaxed px-3 py-2 rounded-2xl"
-                    style={m.role === 'user' ? {
-                      background: 'oklch(75% 0.18 185)',
-                      color: 'oklch(8% 0.025 240)',
-                      borderBottomRightRadius: '4px',
-                    } : {
-                      background: 'oklch(100% 0 0 / 0.07)',
-                      color: 'oklch(85% 0.01 240)',
-                      border: '1px solid oklch(100% 0 0 / 0.1)',
-                      borderBottomLeftRadius: '4px',
-                    }}>
+                  <div
+                    className={`max-w-[85%] border-2 px-3 py-2 text-sm leading-relaxed ${
+                      m.role === 'user'
+                        ? 'border-line bg-web text-web-ink'
+                        : 'border-caption-ink bg-caption text-caption-ink'
+                    }`}
+                  >
                     {m.content}
                   </div>
                 </div>
@@ -264,11 +150,9 @@ export default function ChatWidget() {
 
               {loading && (
                 <div className="flex justify-start">
-                  <div className="px-3 py-2.5 rounded-2xl rounded-bl-sm flex gap-1 items-center"
-                    style={{ background: 'oklch(100% 0 0 / 0.07)', border: '1px solid oklch(100% 0 0 / 0.1)' }}>
+                  <div className="flex items-center gap-1 border-2 border-caption-ink bg-caption px-3 py-2.5">
                     {[0, 1, 2].map(i => (
-                      <span key={i} className="w-1.5 h-1.5 rounded-full animate-bounce"
-                        style={{ background: 'oklch(75% 0.18 185)', animationDelay: `${i * 0.15}s` }} />
+                      <span key={i} className="h-1.5 w-1.5 animate-bounce bg-caption-ink" style={{ animationDelay: `${i * 0.15}s` }} />
                     ))}
                   </div>
                 </div>
@@ -277,13 +161,11 @@ export default function ChatWidget() {
               {messages.length === 1 && !loading && (
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {SUGGESTIONS.map(s => (
-                    <button key={s} onClick={() => send(s)}
-                      className="text-[10px] font-sora px-2.5 py-1 rounded-full transition-opacity hover:opacity-75"
-                      style={{
-                        background: 'oklch(75% 0.18 185 / 0.1)',
-                        color: 'oklch(75% 0.18 185)',
-                        border: '1px solid oklch(75% 0.18 185 / 0.25)',
-                      }}>
+                    <button
+                      key={s}
+                      onClick={() => send(s)}
+                      className="border-2 border-paper-dim px-2.5 py-1 text-xs font-semibold text-paper transition-colors hover:border-hero hover:bg-hero hover:text-hero-ink"
+                    >
                       {s}
                     </button>
                   ))}
@@ -294,14 +176,11 @@ export default function ChatWidget() {
             </div>
 
             {/* Input row */}
-            <div className="px-3 py-3 shrink-0"
-              style={{ borderTop: '1px solid oklch(100% 0 0 / 0.07)' }}>
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl"
-                style={{
-                  background: 'oklch(100% 0 0 / 0.05)',
-                  border: '1px solid oklch(100% 0 0 / 0.1)',
-                }}>
+            <div className="shrink-0 border-t-2 border-line p-3">
+              <div className="flex items-center gap-2 border-2 border-paper-dim bg-ink px-3 py-2 focus-within:border-caption">
+                <label htmlFor="chat-input" className="sr-only">Your question</label>
                 <input
+                  id="chat-input"
                   ref={inputRef}
                   value={input}
                   onChange={e => setInput(e.target.value)}
@@ -309,37 +188,18 @@ export default function ChatWidget() {
                     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input) }
                   }}
                   placeholder="Ask me anything…"
-                  className="flex-1 bg-transparent text-sm font-sora outline-none"
-                  style={{ color: 'oklch(88% 0.01 240)' }}
-                  disabled={loading}
+                  className="flex-1 bg-transparent text-sm text-paper outline-none placeholder:text-paper-dim"
+                  readOnly={loading}
+                  aria-busy={loading}
                 />
 
-                {/* Mic — only shown when browser supports Web Speech API (not iOS) */}
-                {micSupported && (
-                  <button
-                    onPointerDown={e => { e.preventDefault(); toggleMic() }}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg transition-all shrink-0 touch-manipulation"
-                    style={{
-                      background: listening ? 'oklch(60% 0.22 25 / 0.2)' : 'transparent',
-                      color: listening ? 'oklch(60% 0.22 25)' : 'oklch(55% 0.04 240)',
-                      border: listening ? '1px solid oklch(60% 0.22 25 / 0.4)' : '1px solid transparent',
-                    }}
-                    aria-label={listening ? 'Stop listening' : 'Speak your question'}>
-                    <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                      <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd"/>
-                    </svg>
-                  </button>
-                )}
-
-                {/* Send */}
-                <button onClick={() => send(input)}
+                <button
+                  onClick={() => send(input)}
                   disabled={!input.trim() || loading}
-                  className="w-7 h-7 flex items-center justify-center rounded-lg transition-opacity disabled:opacity-25 shrink-0"
-                  style={{ background: 'oklch(75% 0.18 185)', color: 'oklch(8% 0.025 240)' }}
-                  aria-label="Send message">
-                  <svg viewBox="0 0 20 20" fill="currentColor" className="w-3.5 h-3.5">
-                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
-                  </svg>
+                  className="flex h-8 w-8 shrink-0 items-center justify-center bg-hero text-hero-ink transition-opacity disabled:opacity-30"
+                  aria-label="Send message"
+                >
+                  <Send size={15} aria-hidden />
                 </button>
               </div>
             </div>

@@ -1,14 +1,30 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-suit="classic">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Suhas Chowdary | Portfolio</title>
-    <meta name="description" content="AI Engineer & Full Stack Developer — building things that think." />
+    <title>Suhas Choudary | AI engineer and full stack developer</title>
+    <meta name="description" content="Suhas Choudary, AI and full stack engineer in Hyderabad. Agents, guardrails that keep them honest, and the apps around them." />
+    <meta property="og:title" content="Suhas Choudary | Portfolio" />
+    <meta property="og:description" content="AI and full stack engineer building agents, guardrails and the apps around them." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#121a33" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+    <!-- paint the suit's night sky before any CSS loads, so hard loads never flash white -->
+    <style>
+      html { background: #0e1630; }
+      html[data-suit='miles'], html[data-suit='noir'] { background: #121010; }
+      html[data-suit='gwen'] { background: #f6eff4; }
+      html[data-suit='2099'] { background: #0b0f1c; }
+    </style>
+    <script>
+      // Pick the suit before first paint so there is no flash of the wrong theme.
+      try {
+        var s = localStorage.getItem('suit')
+        if (!s) s = matchMedia('(prefers-color-scheme: light)').matches ? 'gwen' : 'classic'
+        document.documentElement.dataset.suit = s
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

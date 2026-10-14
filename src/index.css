@@ -1,211 +1,417 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Suits. One set of tokens per Spider-suit, switched with <html data-suit>.
+   Every colour in the site (and the Three.js scene) reads these.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root,
+:root[data-suit='classic'] {
+  color-scheme: dark;
+  --ink: oklch(15% 0.035 262);       /* night sky / page */
+  --ink-2: oklch(21% 0.045 262);     /* raised panels, buildings */
+  --ink-3: oklch(27% 0.05 262);
+  --paper: oklch(96% 0.012 90);      /* text, silk */
+  --paper-dim: oklch(80% 0.02 262);
+  --hero: oklch(55% 0.21 27);        /* signature red */
+  --hero-ink: oklch(98% 0.01 90);    /* text on --hero */
+  --web: oklch(52% 0.17 262);        /* suit blue */
+  --line: oklch(96% 0.012 90);       /* panel outlines */
+  --caption: oklch(88% 0.15 95);     /* narration boxes */
+  --caption-ink: oklch(18% 0.03 262);
+  --window: oklch(85% 0.12 85);
+  --dot: oklch(100% 0 0 / 0.06);
+  --hero-text: oklch(68% 0.19 27);
+  --web-ink: oklch(98% 0.01 90);
+  --focus: oklch(88% 0.15 95);
+}
+
+:root[data-suit='miles'] {
+  color-scheme: dark;
+  --ink: oklch(13% 0.008 20);
+  --ink-2: oklch(19% 0.012 20);
+  --ink-3: oklch(25% 0.015 20);
+  --paper: oklch(95% 0.008 60);
+  --paper-dim: oklch(78% 0.015 20);
+  --hero: oklch(55% 0.22 25);
+  --hero-ink: oklch(98% 0.005 60);
+  --web: oklch(72% 0.14 205);
+  --line: oklch(95% 0.008 60);
+  --caption: oklch(86% 0.16 95);
+  --caption-ink: oklch(16% 0.01 20);
+  --window: oklch(80% 0.15 330);
+  --dot: oklch(100% 0 0 / 0.05);
+  --hero-text: oklch(68% 0.2 25);
+  --web-ink: oklch(16% 0.01 20);
+  --focus: oklch(86% 0.16 95);
+}
+
+:root[data-suit='gwen'] {
+  color-scheme: light;
+  --ink: oklch(96% 0.012 330);
+  --ink-2: oklch(99% 0.006 330);
+  --ink-3: oklch(91% 0.02 320);
+  --paper: oklch(22% 0.03 290);
+  --paper-dim: oklch(42% 0.03 290);
+  --hero: oklch(56% 0.21 355);
+  --hero-ink: oklch(99% 0.004 330);
+  --web: oklch(50% 0.11 200);
+  --line: oklch(22% 0.03 290);
+  --caption: oklch(90% 0.13 95);
+  --caption-ink: oklch(20% 0.03 290);
+  --window: oklch(70% 0.14 355);
+  --dot: oklch(22% 0.03 290 / 0.07);
+  --hero-text: oklch(50% 0.21 355);
+  --web-ink: oklch(99% 0.004 330);
+  --focus: oklch(22% 0.03 290);
+}
+
+/* Nueva York, 2099: near-black, electric red, neon cyan, with a faint scanline screen. */
+:root[data-suit='2099'] {
+  color-scheme: dark;
+  --ink: oklch(11% 0.03 265);
+  --ink-2: oklch(16% 0.04 260);
+  --ink-3: oklch(22% 0.05 255);
+  --paper: oklch(96% 0.02 200);
+  --paper-dim: oklch(80% 0.05 205);
+  --hero: oklch(56% 0.23 25);
+  --hero-ink: oklch(98% 0.01 200);
+  --web: oklch(80% 0.15 195);
+  --line: oklch(84% 0.13 195);
+  --caption: oklch(84% 0.14 195);
+  --caption-ink: oklch(14% 0.03 265);
+  --window: oklch(82% 0.15 195);
+  --dot: oklch(85% 0.15 195 / 0.06);
+  --hero-text: oklch(68% 0.21 25);
+  --web-ink: oklch(14% 0.03 265);
+  --focus: oklch(84% 0.14 195);
+}
+
+:root[data-suit='2099'] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 61;
+  pointer-events: none;
+  background: repeating-linear-gradient(180deg, oklch(85% 0.15 195 / 0.035) 0 1px, transparent 1px 3px);
+}
+
+/* Hidden suit. Unlocked with the Konami code. */
+:root[data-suit='noir'] {
+  color-scheme: dark;
+  --ink: oklch(13% 0 0);
+  --ink-2: oklch(19% 0 0);
+  --ink-3: oklch(26% 0 0);
+  --paper: oklch(94% 0 0);
+  --paper-dim: oklch(74% 0 0);
+  --hero: oklch(86% 0 0);
+  --hero-ink: oklch(14% 0 0);
+  --web: oklch(38% 0 0);
+  --line: oklch(94% 0 0);
+  --caption: oklch(86% 0 0);
+  --caption-ink: oklch(14% 0 0);
+  --window: oklch(88% 0 0);
+  --dot: oklch(100% 0 0 / 0.08);
+  --hero-text: oklch(86% 0 0);
+  --web-ink: oklch(94% 0 0);
+  --focus: oklch(86% 0 0);
+}
+
 @theme inline {
-  /* ── Anime Game Launcher palette ─────────────────────────────────── */
-  --color-bg-deep:      oklch(8% 0.025 240);
-  --color-bg-mid:       oklch(12% 0.02 240);
-  --color-teal:         oklch(75% 0.18 185);
-  --color-teal-bright:  oklch(85% 0.20 185);
-  --color-teal-dim:     oklch(55% 0.14 185);
-  --color-green:        oklch(83% 0.22 155);
-  --color-orange:       oklch(70% 0.19 42);
-  --color-text:         oklch(95% 0.01 240);
-  --color-text-dim:     oklch(72% 0.04 240);
-  --color-text-muted:   oklch(45% 0.04 240);
-  --color-glass:        oklch(100% 0 0 / 0.07);
-  --color-glass-hover:  oklch(100% 0 0 / 0.12);
-  --color-glass-border: oklch(100% 0 0 / 0.12);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-hero: var(--hero);
+  --color-hero-ink: var(--hero-ink);
+  --color-web: var(--web);
+  --color-web-ink: var(--web-ink);
+  --color-hero-text: var(--hero-text);
+  --color-line: var(--line);
+  --color-caption: var(--caption);
+  --color-caption-ink: var(--caption-ink);
 
-  /* ── Font families ────────────────────────────────────────────────── */
-  --font-sora:    'Sora', sans-serif;
-  --font-bebas:   'Bebas Neue', sans-serif;
-  --font-noto-jp: 'Noto Sans JP', sans-serif;
-
-  /* ── Legacy CRT vars (kept so old components don't break) ────────── */
-  --color-crt-bg:           oklch(5% 0.007 55);
-  --color-crt-dark:         oklch(10% 0.009 55);
-  --color-crt-amber-dim:    oklch(35% 0.10 62);
-  --color-crt-amber:        oklch(55% 0.155 65);
-  --color-crt-amber-bright: oklch(78% 0.17 72);
-  --color-crt-amber-glow:   oklch(90% 0.12 80);
-  --color-crt-cyan:         oklch(68% 0.15 198);
-  --color-crt-cyan-bright:  oklch(82% 0.18 198);
-  --color-crt-red:          oklch(60% 0.18 28);
-}
-
-:root {
-  --crt-scanline-opacity:  0;
-  --crt-flicker-intensity: 0;
-  --crt-aberration-offset: 0px;
-  --crt-curvature:         12px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --crt-flicker-intensity: 0;
-    --crt-scanline-opacity:  0;
-    --crt-aberration-offset: 0px;
-  }
+  --font-display: 'Anton', 'Impact', sans-serif;
+  --font-sfx: 'Bangers', 'Anton', sans-serif;
+  --font-body: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
 }
 
 /* ── Base ─────────────────────────────────────────────────────────────── */
 
+html {
+  background: var(--ink);
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
 body {
-  background:  oklch(8% 0.025 240);
-  color:       oklch(95% 0.01 240);
-  font-family: 'Sora', sans-serif;
-  min-height:  100dvh;
-  overflow-x:  hidden;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Glass utilities ─────────────────────────────────────────────────── */
+/* ── Suit switch: a stepped Spider-Verse "dimension glitch" (view transition) ── */
 
-.glass {
-  background:       oklch(100% 0 0 / 0.07);
-  backdrop-filter:  blur(24px) saturate(1.4);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4);
-  border:           1px solid oklch(100% 0 0 / 0.12);
-  border-radius:    1rem;
+::view-transition-old(root) {
+  animation: vt-out 0.42s steps(7, end) both;
+}
+::view-transition-new(root) {
+  animation: vt-in 0.42s steps(7, end) both;
 }
 
-.glass-sm {
-  background:       oklch(100% 0 0 / 0.07);
-  backdrop-filter:  blur(16px) saturate(1.3);
-  -webkit-backdrop-filter: blur(16px) saturate(1.3);
-  border:           1px solid oklch(100% 0 0 / 0.10);
-  border-radius:    0.75rem;
+@keyframes vt-in {
+  0% { clip-path: inset(0 0 100% 0); translate: 14px 0; filter: hue-rotate(90deg) saturate(1.6); }
+  25% { clip-path: inset(18% 0 52% 0); translate: -12px 0; }
+  45% { clip-path: inset(0 0 34% 0); translate: 9px 0; filter: hue-rotate(-70deg) saturate(1.4); }
+  70% { clip-path: inset(0 0 10% 0); translate: -5px 0; }
+  100% { clip-path: inset(0); translate: 0 0; filter: none; }
+}
+@keyframes vt-out {
+  0% { translate: 0 0; }
+  40% { translate: -10px 0; filter: hue-rotate(50deg); }
+  100% { translate: 8px 0; filter: hue-rotate(-30deg); }
 }
 
-.glass-hover {
-  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
-}
-.glass-hover:hover {
-  background:   oklch(100% 0 0 / 0.12);
-  border-color: oklch(100% 0 0 / 0.22);
-  box-shadow:   0 0 24px oklch(75% 0.18 185 / 0.15);
+::selection {
+  background: var(--hero);
+  color: var(--hero-ink);
 }
 
-/* ── Glow utilities ──────────────────────────────────────────────────── */
-
-.teal-glow {
-  text-shadow:
-    0 0 8px  oklch(85% 0.20 185 / 0.8),
-    0 0 20px oklch(75% 0.18 185 / 0.4),
-    0 0 40px oklch(75% 0.18 185 / 0.15);
-}
-
-.teal-box-glow {
-  box-shadow:
-    0 0 12px oklch(75% 0.18 185 / 0.2),
-    0 0 32px oklch(75% 0.18 185 / 0.08),
-    inset 0 1px 0 oklch(100% 0 0 / 0.12);
-}
-
-.orange-glow {
-  text-shadow:
-    0 0 8px  oklch(70% 0.19 42 / 0.9),
-    0 0 20px oklch(70% 0.19 42 / 0.4);
-}
-
-/* ── Animations ──────────────────────────────────────────────────────── */
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.6; }
-  50%       { opacity: 1; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-6px); }
-}
-
-@keyframes crt-flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; filter: brightness(1); }
-  20%, 24%, 55% {
-    opacity: calc(1 - var(--crt-flicker-intensity));
-    filter:  brightness(calc(1 - var(--crt-flicker-intensity) * 2));
-  }
-}
-
-@keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
-
-@keyframes crt-power-on {
-  0%   { clip-path: inset(50% 0); filter: brightness(4); }
-  30%  { clip-path: inset(10% 0); filter: brightness(2); }
-  60%  { clip-path: inset(2% 0);  filter: brightness(1.3); }
-  100% { clip-path: inset(0% 0);  filter: brightness(1); }
-}
-
-@keyframes float-glyph {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-6px); }
-}
-
-.pulse-glow  { animation: pulse-glow 3s ease-in-out infinite; }
-.float-anim  { animation: float 6s ease-in-out infinite; }
-.crt-flicker { animation: crt-flicker 8s infinite; }
-.blink       { animation: blink 1s step-end infinite; }
-.crt-power-on { animation: crt-power-on 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-/* ── Font helpers ─────────────────────────────────────────────────────── */
-
-.font-sora    { font-family: 'Sora', sans-serif; }
-.font-bebas   { font-family: 'Bebas Neue', sans-serif; }
-.font-noto-jp { font-family: 'Noto Sans JP', sans-serif; }
-
-/* ── Project cards ────────────────────────────────────────────────────── */
-
-.project-card {
-  transition: transform 0.25s, box-shadow 0.25s, border-color 0.2s;
-}
-.project-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow:
-    0 12px 40px oklch(8% 0.025 240 / 0.5),
-    0 0 24px oklch(75% 0.18 185 / 0.18);
-  border-color: oklch(75% 0.18 185 / 0.4) !important;
-}
-.project-card:focus-visible {
-  outline: 2px solid oklch(75% 0.18 185);
+:focus-visible {
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 
-/* ── Nav rail ─────────────────────────────────────────────────────────── */
-
-.nav-icon-btn {
-  transition: background 0.18s, box-shadow 0.18s;
+/* Ben-Day dot print screen over the whole page. Fixed and inert, so it never repaints on scroll. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.4px);
+  background-size: 5px 5px;
 }
-.nav-icon-btn:hover,
-.nav-icon-btn.active {
-  background:  oklch(75% 0.18 185 / 0.12);
-  box-shadow:  0 0 16px oklch(75% 0.18 185 / 0.2);
+
+/* ── Type ─────────────────────────────────────────────────────────────── */
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  line-height: 0.92;
 }
 
-/* ── Legacy CRT helpers (backward compat) ─────────────────────────────── */
+.font-sfx {
+  font-family: var(--font-sfx);
+  letter-spacing: 0.04em;
+}
 
-.chromatic {
+/* Spider-Verse misregistration: the plate is printed a hair off. */
+.misprint {
   text-shadow:
-    calc(var(--crt-aberration-offset) * -1) 0 oklch(60% 0.18 28 / 0.55),
-    var(--crt-aberration-offset)            0 oklch(68% 0.15 198 / 0.55);
+    -0.045em 0.03em 0 var(--hero),
+    0.04em -0.025em 0 var(--web);
+  transition: text-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.misprint-hover:hover .misprint,
+.misprint-hover:focus-visible .misprint {
+  text-shadow:
+    -0.08em 0.05em 0 var(--hero),
+    0.07em -0.045em 0 var(--web);
 }
 
-.amber-glow {
-  text-shadow:
-    0 0 8px  oklch(78% 0.17 72 / 0.8),
-    0 0 20px oklch(78% 0.17 72 / 0.4),
-    0 0 40px oklch(78% 0.17 72 / 0.15);
+/* Inked SFX lettering, e.g. THWIP! */
+.sfx {
+  font-family: var(--font-sfx);
+  color: var(--caption);
+  -webkit-text-stroke: 0.06em var(--caption-ink);
+  paint-order: stroke fill;
+  text-shadow: 0.08em 0.08em 0 var(--hero);
+  letter-spacing: 0.05em;
 }
 
-.cyan-glow {
-  text-shadow:
-    0 0 8px  oklch(82% 0.18 198 / 0.8),
-    0 0 20px oklch(82% 0.18 198 / 0.4);
+/* ── Comic surfaces ───────────────────────────────────────────────────── */
+
+.panel {
+  background: var(--ink-2);
+  border: 2px solid var(--line);
+  box-shadow: 6px 6px 0 var(--hero);
 }
+
+.panel-web {
+  box-shadow: 6px 6px 0 var(--web);
+}
+
+.caption-box {
+  display: inline-block;
+  background: var(--caption);
+  color: var(--caption-ink);
+  border: 2px solid var(--caption-ink);
+  padding: 0.3em 0.7em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.halftone {
+  background-image: radial-gradient(currentColor 22%, transparent 24%);
+  background-size: 9px 9px;
+}
+
+.halftone-fade {
+  background-image: radial-gradient(currentColor 30%, transparent 32%);
+  background-size: 10px 10px;
+  -webkit-mask-image: linear-gradient(135deg, black, transparent 75%);
+  mask-image: linear-gradient(135deg, black, transparent 75%);
+}
+
+/* Radial speed lines, used behind covers. */
+.speedlines {
+  background-image: repeating-conic-gradient(from 0deg at 50% 50%, currentColor 0deg 2deg, transparent 2deg 9deg);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+  padding: 0.85rem 1.4rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 1.05rem;
+  line-height: 1;
+  border: 2px solid var(--line);
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+.btn:hover {
+  transform: translate(-2px, -2px);
+}
+.btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 transparent !important;
+}
+
+.btn-hero {
+  background: var(--hero);
+  color: var(--hero-ink);
+  box-shadow: 5px 5px 0 var(--web);
+}
+.btn-hero:hover {
+  box-shadow: 7px 7px 0 var(--web);
+}
+
+.btn-ghost {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 5px 5px 0 var(--hero);
+}
+.btn-ghost:hover {
+  box-shadow: 7px 7px 0 var(--hero);
+}
+
+/* Spider-sense: tingle marks flicker around whatever you are about to hit. */
+.sense {
+  position: relative;
+}
+.sense::before,
+.sense::after {
+  content: '';
+  position: absolute;
+  top: -26px;
+  width: 34px;
+  height: 24px;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--caption);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 16'%3E%3Cpath d='M2 14 L6 9 L4 7 L9 2 M10 15 L13 9 L11 8 L15 3 M17 14 L19 10 L18 8 L21 5' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 16'%3E%3Cpath d='M2 14 L6 9 L4 7 L9 2 M10 15 L13 9 L11 8 L15 3 M17 14 L19 10 L18 8 L21 5' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.sense::before {
+  left: -14px;
+  transform: rotate(-35deg);
+}
+.sense::after {
+  right: -14px;
+  transform: scaleX(-1) rotate(-35deg);
+}
+.sense:hover::before,
+.sense:hover::after,
+.sense:focus-visible::before,
+.sense:focus-visible::after {
+  animation: tingle 0.36s steps(3, jump-none) infinite;
+}
+
+@keyframes tingle {
+  0% { opacity: 1; translate: 0 0; }
+  33% { opacity: 0.4; translate: -2px -3px; }
+  66% { opacity: 1; translate: 2px -1px; }
+  100% { opacity: 1; translate: 0 0; }
+}
+
+/* ── Tag chips ────────────────────────────────────────────────────────── */
+
+.chip {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border: 1.5px solid var(--paper-dim);
+  color: var(--paper);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── Motion safety ────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse-glow, .float-anim, .crt-flicker, .blink, .crt-power-on { animation: none; }
-  .project-card:hover { transform: none; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── 404: the page glitches like a Spot portal ───────────────────────── */
+
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.glitch::before {
+  color: var(--web);
+  animation: glitch-a 2.4s steps(1, end) infinite;
+}
+.glitch::after {
+  color: var(--hero);
+  animation: glitch-b 3.1s steps(1, end) infinite;
+}
+
+@keyframes glitch-a {
+  0%, 14%, 100% { clip-path: inset(100% 0 0 0); translate: 0 0; }
+  2% { clip-path: inset(10% 0 62% 0); translate: -8px 0; }
+  6% { clip-path: inset(55% 0 20% 0); translate: 6px 0; }
+  10% { clip-path: inset(30% 0 48% 0); translate: -4px 0; }
+}
+@keyframes glitch-b {
+  0%, 12%, 100% { clip-path: inset(100% 0 0 0); translate: 0 0; }
+  4% { clip-path: inset(70% 0 5% 0); translate: 9px 0; }
+  8% { clip-path: inset(15% 0 70% 0); translate: -6px 0; }
 }
