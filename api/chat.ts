@@ -74,7 +74,10 @@ export default async function handler(
         ...cleanHistory,
         { role: 'user', content: message.slice(0, 1000) },
       ],
-      max_tokens: 120,
+      // gpt-oss is a reasoning model: with a tight budget it spends every token thinking and
+      // returns empty content, so keep reasoning low and leave room for the answer itself.
+      ...(/gpt-oss/.test(GROQ_MODEL) ? { reasoning_effort: 'low' as const, include_reasoning: false } : {}),
+      max_completion_tokens: 600,
       temperature: 0.7,
     })
 
