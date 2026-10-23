@@ -9,6 +9,7 @@ import ChatWidget from './components/ChatWidget'
 import TitleSequence from './components/TitleSequence'
 import { unlockNoir } from './lib/suit'
 import { useIntroPlaying } from './lib/intro'
+import { useSpiderCursor } from './lib/spider'
 import Home from './pages/Home'
 
 // Home ships in the main bundle; every other page loads on demand.
@@ -84,6 +85,7 @@ function NoirEgg() {
 export default function App() {
   // while the intro plays, the page behind it is inert: no tabbing into invisible links
   const playing = useIntroPlaying()
+  useSpiderCursor()
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <MotionConfig reducedMotion="user">
