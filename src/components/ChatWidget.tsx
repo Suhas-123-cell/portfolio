@@ -15,6 +15,45 @@ const SUGGESTIONS = [
   "Tell me about IntentShield",
 ]
 
+// The model replies with light markdown (**bold**, "- " and "1." lists); render just that, no raw asterisks.
+function inline(text: string) {
+  return text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    part.startsWith('**') && part.endsWith('**') && part.length > 4
+      ? <strong key={i} className="font-bold">{part.slice(2, -2)}</strong>
+      : part,
+  )
+}
+
+function Reply({ text }: { text: string }) {
+  const blocks: { list: boolean; ordered: boolean; lines: string[] }[] = []
+  for (const raw of text.split('\n')) {
+    const line = raw.trim()
+    if (!line) continue
+    const m = /^(?:([-*•])|(\d+)[.)])\s+(.*)$/.exec(line)
+    const last = blocks[blocks.length - 1]
+    if (m) {
+      const ordered = !!m[2]
+      if (last?.list && last.ordered === ordered) last.lines.push(m[3])
+      else blocks.push({ list: true, ordered, lines: [m[3]] })
+    } else {
+      blocks.push({ list: false, ordered: false, lines: [line] })
+    }
+  }
+  return (
+    <div className="space-y-2">
+      {blocks.map((b, i) => {
+        if (!b.list) return <p key={i}>{inline(b.lines[0])}</p>
+        const Tag = b.ordered ? 'ol' : 'ul'
+        return (
+          <Tag key={i} className={`space-y-1 pl-5 ${b.ordered ? 'list-decimal' : 'list-disc'}`}>
+            {b.lines.map((l, j) => <li key={j} className="pl-0.5">{inline(l)}</li>)}
+          </Tag>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -143,7 +182,7 @@ export default function ChatWidget() {
                         : 'border-caption-ink bg-caption text-caption-ink'
                     }`}
                   >
-                    {m.content}
+                    {m.role === 'assistant' ? <Reply text={m.content} /> : m.content}
                   </div>
                 </div>
               ))}
